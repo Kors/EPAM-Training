@@ -1,0 +1,3 @@
+rootProject.name = 'Epam-Training'
+include '1-fundamentals'
+include 'http-server'
