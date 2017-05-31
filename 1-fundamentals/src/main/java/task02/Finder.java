@@ -1,46 +1,30 @@
 package task02;
 
-import java.util.Random;
-
 public class Finder {
-	private static int n = 778;// считаем  что неизвестное по задаче условие "М" это "больше некоторого числа n"
+	private static double e = 0.1;
 
 	public static void main(String... args) {
-		int[] array = createRandomArray();
-		int index = getFirstMatched(array);
-		printInfo(array, index);
-		printTillIndex(array, index);
+		readArgs(args);
+		printSequenceTillE(e);
 	}
 
-	private static int[] createRandomArray() {
-		Random rand = new Random();
-		int[] arr = new int[rand.nextInt(10) + 5];
-		for (int i = 0; i < arr.length; i++)
-			arr[i] = rand.nextInt(1000);
-		return arr;
+	private static void readArgs(String[] args) {
+		for (String val : args)
+			if (val.startsWith("e="))
+				e = Double.parseDouble(val.substring(2));
 	}
 
-	private static int getFirstMatched(int[] arr) {
-		for (int i = 0; i < arr.length; i++)
-			if (arr[i] > n)
-				return i;
-		return -1;
-	}
-
-	private static void printInfo(int[] array, int index) {
-		System.out.println("Массив: ");
-		for (int val : array)
-			System.out.print(val + "; ");
-		System.out.println();
-		System.out.println("Условие: число больше чем " + n);
-		if (index < 0)
-			throw new RuntimeException("Условие не выполнено.");
-		System.out.println("Условие выполнено для элемента №" + index);
-	}
-
-	private static void printTillIndex(int[] array, int index) {
-		System.out.println("Элементы массива до " + index + ":");
-		for (int i = 0; i < array.length && i <= index; i++)
-			System.out.println(array[i]);
+	private static void printSequenceTillE(double e) {
+		for (int i = 1; i < Integer.MAX_VALUE; i++) {
+			double a = 1.0 / ((i + 1) * (i + 1));
+			System.out.print(a + "; ");
+			if (a < e) {
+				System.out.println("\nНаименьший номер элемента меньше e=" + e + " равен " + i +
+						"\nЗначение этого элемента = " + a);
+				return;
+			}
+		}
+		System.out.println("Было проверено " + Integer.MAX_VALUE + " элементов последовательности, " +
+				"но значение мньше чем " + e + " не найдено.");
 	}
 }
