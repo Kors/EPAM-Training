@@ -1,0 +1,2 @@
+C:\Work\Epam-Training\1-fundamentals\src\main\java>java -cp "." task01.main.Main
+I'm string in Logic
