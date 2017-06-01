@@ -1,13 +1,17 @@
 package task06;
 
-public class Note {
+class Note {
 	private String value;
 
-	public String getValue() {
+	Note(String note) {
+		this.value = note;
+	}
+
+	String getValue() {
 		return value;
 	}
 
-	public void setValue(String value) {
+	void setValue(String value) {
 		this.value = value;
 	}
 }
