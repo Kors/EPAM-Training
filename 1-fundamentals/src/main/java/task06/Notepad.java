@@ -1,17 +1,38 @@
 package task06;
 
+/**
+ * Класс служит для работы с текстовыми заметками и их хранения
+ *
+ * @author Korsikov Ilya
+ * @version 1.0
+ */
 public class Notepad {
 
+	/**
+	 * переменная хранит массив созданных заметок
+	 */
 	private Note[] notes = new Note[0];
 
+	/**
+	 * создаёт новую заметку с заданным значением
+	 * и добавляет её в хранилище
+	 *
+	 * @param noteValue - текст заметки
+	 */
 	@SuppressWarnings("WeakerAccess")
-	public void addNote(String newNote) {
+	public void addNote(String noteValue) {
 		Note[] temp = new Note[notes.length + 1];
 		System.arraycopy(notes, 0, temp, 0, notes.length);
 		notes = temp;
-		notes[notes.length - 1] = new Note(newNote);
+		notes[notes.length - 1] = new Note(noteValue);
 	}
 
+
+	/**
+	 * удаляет заметку по её номеру в хранилище
+	 *
+	 * @param noteNumber - номер заметки в хранилище
+	 */
 	@SuppressWarnings("WeakerAccess")
 	public void removeNote(int noteNumber) {
 		assertLength(noteNumber);
@@ -21,18 +42,32 @@ public class Notepad {
 		notes = temp;
 	}
 
+	/**
+	 * проверяет наличие заметки с указанным номером
+	 *
+	 * @param noteNumber - номер заметки в хранилище
+	 */
 	private void assertLength(int noteNumber) {
-		if (noteNumber > notes.length)
+		if (noteNumber > notes.length || noteNumber < 0)
 			throw new RuntimeException(
 					String.format("Не существует заметки №%d. Всего заметок: %d", noteNumber, notes.length));
 	}
 
+	/**
+	 * заменяет содержимое заметки с указанным номером
+	 *
+	 * @param noteValue  - текст заметки
+	 * @param noteNumber - номер заметки в хранилище
+	 */
 	@SuppressWarnings("WeakerAccess")
-	public void editNote(String note, int noteNumber) {
+	public void editNote(String noteValue, int noteNumber) {
 		assertLength(noteNumber);
-		notes[noteNumber - 1].setValue(note);
+		notes[noteNumber - 1].setValue(noteValue);
 	}
 
+	/**
+	 * отображает все заметки
+	 */
 	@SuppressWarnings("WeakerAccess")
 	public void showNotes() {
 		System.out.println("Заметки в блокноте:");
@@ -40,6 +75,9 @@ public class Notepad {
 			System.out.printf("* %s%n", note.getValue());
 	}
 
+	/**
+	 * тестовый запуск
+	 */
 	public static void main(String[] args) {
 		Notepad nb = new Notepad();
 		nb.showNotes();
