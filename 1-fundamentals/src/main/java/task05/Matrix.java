@@ -31,9 +31,9 @@ public class Matrix {
 		for (int i = 0; i < n; i++) {
 			System.out.print("(");
 			for (int j = 0; j < n; j++) {
-				System.out.print(matrix[i][j] + " ");
+				System.out.printf("%d ", matrix[i][j]);
 			}
-			System.out.println(")");
+			System.out.println("\b)");
 		}
 	}
 }

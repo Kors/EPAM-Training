@@ -23,7 +23,8 @@ public class Notepad {
 
 	private void assertLength(int noteNumber) {
 		if (noteNumber > notes.length)
-			throw new RuntimeException("Не существует заметки №" + noteNumber + ". Всего заметок: " + notes.length);
+			throw new RuntimeException(
+					String.format("Не существует заметки №%d. Всего заметок: %d", noteNumber, notes.length));
 	}
 
 	@SuppressWarnings("WeakerAccess")
@@ -36,7 +37,7 @@ public class Notepad {
 	public void showNotes() {
 		System.out.println("Заметки в блокноте:");
 		for (Note note : notes)
-			System.out.println("* " + note.getValue());
+			System.out.printf("* %s%n", note.getValue());
 	}
 
 	public static void main(String[] args) {

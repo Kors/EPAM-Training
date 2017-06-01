@@ -13,7 +13,7 @@ public class Max {
 		} else
 			createRandomArray();
 		printArray();
-		System.out.println("Максимальная сумма (Am+An-m) = " + maxSum());
+		System.out.printf("Максимальная сумма (Am+An-m) = %s%n", maxSum());
 	}
 
 	private static void readArgs(String[] args) {
@@ -53,9 +53,8 @@ public class Max {
 
 	private static void printArray() {
 		System.out.print("Массив: [");
-		for (double d : numbers) {
-			System.out.print(d + "; ");
-		}
+		for (double d : numbers)
+			System.out.printf("%s; ", d);
 		System.out.println("\b\b]");
 	}
 }
