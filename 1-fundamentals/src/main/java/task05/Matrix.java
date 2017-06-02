@@ -30,9 +30,8 @@ public class Matrix {
 	private static void printMaitrix(int[][] matrix) {
 		for (int i = 0; i < n; i++) {
 			System.out.print("(");
-			for (int j = 0; j < n; j++) {
+			for (int j = 0; j < n; j++)
 				System.out.printf("%d ", matrix[i][j]);
-			}
 			System.out.println("\b)");
 		}
 	}
