@@ -5,7 +5,7 @@ public class Matrix {
 
 	public static void main(String... args) {
 		readArgs(args);
-		printMaitrix(createMatrix());
+		printMatrix(createMatrix());
 	}
 
 	private static void readArgs(String[] args) {
@@ -27,7 +27,7 @@ public class Matrix {
 		return matrix;
 	}
 
-	private static void printMaitrix(int[][] matrix) {
+	private static void printMatrix(int[][] matrix) {
 		for (int i = 0; i < n; i++) {
 			System.out.print("(");
 			for (int j = 0; j < n; j++)
