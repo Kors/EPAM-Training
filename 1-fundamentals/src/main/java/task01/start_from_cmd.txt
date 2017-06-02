@@ -1,2 +1,12 @@
-C:\Work\Epam-Training\1-fundamentals\src\main\java>java -cp "." task01.main.Main
+C:\Work\Epam-Training\1-fundamentals\src\main\java\task01>compileAndRun.bat
+
+C:\Work\Epam-Training\1-fundamentals\src\main\java\task01>cd ../../../..
+
+C:\Work\Epam-Training\1-fundamentals>javac -cp src/main/java;. -d build/classes/main src/main/java/task01/main/Main.java
+
+C:\Work\Epam-Training\1-fundamentals>java -cp ./build/classes/main task01.main.Main
 I'm string in Logic
+
+C:\Work\Epam-Training\1-fundamentals>cd src/main/java/task01
+
+C:\Work\Epam-Training\1-fundamentals\src\main\java\task01>
