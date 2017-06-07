@@ -11,7 +11,11 @@ public class Notepad {
 	/**
 	 * переменная хранит массив созданных заметок
 	 */
-	private Note[] notes = new Note[0];
+	private Note[] notes = new Note[10];
+	/**
+	 * переменная хранит текущее количество заметок в массиве
+	 */
+	private int notesCounter;
 
 	/**
 	 * создаёт новую заметку с заданным значением
@@ -21,12 +25,22 @@ public class Notepad {
 	 */
 	@SuppressWarnings("WeakerAccess")
 	public void addNote(String noteValue) {
-		Note[] temp = new Note[notes.length + 1];
-		System.arraycopy(notes, 0, temp, 0, notes.length);
-		notes = temp;
-		notes[notes.length - 1] = new Note(noteValue);
+		if (notesCounter >= notes.length)
+			changeArraySize();
+		notes[notesCounter] = new Note(noteValue);
+		notesCounter++;
 	}
 
+	/**
+	 * изменяет размер массива (в зависимости от текушего количества занятых элементов)
+	 * увеличивает, чтобы влезли новые элементы
+	 * или уменьшает, чтобы уменьшить занятую память.
+	 */
+	private void changeArraySize() {
+		Note[] temp = new Note[notesCounter + 10];
+		System.arraycopy(notes, 0, temp, 0, notes.length);
+		notes = temp;
+	}
 
 	/**
 	 * удаляет заметку по её номеру в хранилище
@@ -36,10 +50,11 @@ public class Notepad {
 	@SuppressWarnings("WeakerAccess")
 	public void removeNote(int noteNumber) {
 		assertLength(noteNumber);
-		Note[] temp = new Note[notes.length - 1];
-		System.arraycopy(notes, 0, temp, 0, noteNumber - 1);
-		System.arraycopy(notes, noteNumber, temp, noteNumber - 1, notes.length - noteNumber);
-		notes = temp;
+		if (notesCounter < notes.length - 20)
+			changeArraySize();
+		System.arraycopy(notes, noteNumber, notes, noteNumber - 1, notesCounter - noteNumber);
+		notes[notesCounter] = null;
+		notesCounter--;
 	}
 
 	/**
@@ -70,9 +85,10 @@ public class Notepad {
 	 */
 	@SuppressWarnings("WeakerAccess")
 	public void showNotes() {
-		System.out.println("Заметки в блокноте:");
-		for (Note note : notes)
-			System.out.printf("* %s%n", note.getValue());
+		System.out.println("Заметки в блокноте (" + notesCounter + "шт):");
+		for (int i = 0; i < notesCounter; i++)
+			System.out.printf(i + ") %s%n", notes[i].getValue());
+		System.out.println();
 	}
 
 	/**
