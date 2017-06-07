@@ -1,5 +1,7 @@
 package task02;
 
+import static java.lang.StrictMath.pow;
+
 public class Finder {
 	private static double e = 0.1;
 
@@ -16,7 +18,7 @@ public class Finder {
 
 	private static void printSequenceTillE(double e) {
 		for (int i = 1; i < Integer.MAX_VALUE; i++) {
-			double a = 1.0 / ((i + 1) * (i + 1));
+			double a = 1.0 / pow((i + 1), 2);
 			System.out.printf("%s; ", a);
 			if (a < e) {
 				System.out.printf("%nНаименьший номер элемента меньше e=%s равен %d%n" +
