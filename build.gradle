@@ -1,14 +1,26 @@
 group 'Epam-Training'
-version '1.0-SNAPSHOT'
+version '1.1'
 
 apply plugin: 'java'
 
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+	mavenCentral()
+	mavenLocal()
+}
+
+configurations {
+	testCompile.extendsFrom compileOnly
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+	compileOnly 'org.projectlombok:lombok:+'
+
+	testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+task wrapper(type: Wrapper) {
+	gradleVersion = '2.10'
 }
