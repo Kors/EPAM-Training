@@ -1,41 +1,19 @@
 package task06;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /**
- *  ласс служит дл€ хранени€ значени€ текстовой заметки
+ * This class is used for storing note
  *
  * @author Korsikov Ilya
  * @version 1.0
  */
+@Data
+@AllArgsConstructor
 class Note {
 	/**
-	 * переменна€ хранит текст заметки
+	 * text value of the Note
 	 */
 	private String value;
-
-	/**
-	 * создаЄт новый объект с заданным значением
-	 *
-	 * @param value - текст заметки
-	 */
-	Note(String value) {
-		this.value = value;
-	}
-
-	/**
-	 * ¬озвращает строку с текстом заметки {@link Note#value}
-	 *
-	 * @return note - текст заметки
-	 */
-	String getValue() {
-		return value;
-	}
-
-	/**
-	 * »змен€ет текст заметки на заданный
-	 *
-	 * @param value - текст заметки
-	 */
-	void setValue(String value) {
-		this.value = value;
-	}
 }
