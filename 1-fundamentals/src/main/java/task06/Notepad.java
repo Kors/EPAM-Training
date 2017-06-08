@@ -1,5 +1,7 @@
 package task06;
 
+import lombok.Getter;
+
 /**
  * This class is used for storing array of notes and working with them
  *
@@ -10,12 +12,14 @@ public class Notepad {
 
 	/**
 	 * storing Notes in array
+	 *
 	 * @see Note
 	 */
 	private Note[] notes = new Note[10];
 	/**
 	 * counting actual number of notes
 	 */
+	@Getter
 	private int notesCounter;
 
 	/**
@@ -94,18 +98,18 @@ public class Notepad {
 	 * just for test
 	 */
 	public static void main(String[] args) {
-		Notepad nb = new Notepad();
-		nb.showNotes();
-		nb.addNote("first note");
-		nb.addNote("second note");
-		nb.addNote("third note");
-		nb.showNotes();
-		nb.editNote("fourth note", 2);
-		nb.editNote("fifth note", 1);
-		nb.addNote("sixth note");
-		nb.showNotes();
-		nb.removeNote(1);
-		nb.removeNote(3);
-		nb.showNotes();
+		Notepad np = new Notepad();
+		np.showNotes();
+		np.addNote("first note");
+		np.addNote("second note");
+		np.addNote("third note");
+		np.showNotes();
+		np.editNote("fourth note", 2);
+		np.editNote("fifth note", 1);
+		np.addNote("sixth note");
+		np.showNotes();
+		np.removeNote(1);
+		np.removeNote(3);
+		np.showNotes();
 	}
 }
