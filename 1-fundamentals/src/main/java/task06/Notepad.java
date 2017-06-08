@@ -1,7 +1,7 @@
 package task06;
 
 /**
- * Класс служит для работы с текстовыми заметками и их хранения
+ * This class is used for storing array of notes and working with them
  *
  * @author Korsikov Ilya
  * @version 1.0
@@ -9,19 +9,20 @@ package task06;
 public class Notepad {
 
 	/**
-	 * переменная хранит массив созданных заметок
+	 * storing Notes in array
+	 * @see Note
 	 */
 	private Note[] notes = new Note[10];
 	/**
-	 * переменная хранит текущее количество заметок в массиве
+	 * counting actual number of notes
 	 */
 	private int notesCounter;
 
 	/**
-	 * создаёт новую заметку с заданным значением
-	 * и добавляет её в хранилище
+	 * create new Note with given text and add it to storage
 	 *
-	 * @param noteValue - текст заметки
+	 * @param noteValue - text value of the note
+	 * @see Note
 	 */
 	@SuppressWarnings("WeakerAccess")
 	public void addNote(String noteValue) {
@@ -32,9 +33,7 @@ public class Notepad {
 	}
 
 	/**
-	 * изменяет размер массива (в зависимости от текушего количества занятых элементов)
-	 * увеличивает, чтобы влезли новые элементы
-	 * или уменьшает, чтобы уменьшить занятую память.
+	 * changing size of note's array depending on actual number of notes
 	 */
 	private void changeArraySize() {
 		Note[] temp = new Note[notesCounter + 10];
@@ -43,9 +42,9 @@ public class Notepad {
 	}
 
 	/**
-	 * удаляет заметку по её номеру в хранилище
+	 * removes a note according to its number in the storage
 	 *
-	 * @param noteNumber - номер заметки в хранилище
+	 * @param noteNumber - note's number in the storage
 	 */
 	@SuppressWarnings("WeakerAccess")
 	public void removeNote(int noteNumber) {
@@ -58,9 +57,9 @@ public class Notepad {
 	}
 
 	/**
-	 * проверяет наличие заметки с указанным номером
+	 * check if the note is in the storage
 	 *
-	 * @param noteNumber - номер заметки в хранилище
+	 * @param noteNumber - note's number in the storage
 	 */
 	private void assertLength(int noteNumber) {
 		if (noteNumber > notes.length || noteNumber < 0)
@@ -69,10 +68,10 @@ public class Notepad {
 	}
 
 	/**
-	 * заменяет содержимое заметки с указанным номером
+	 * replaces contents of the note
 	 *
-	 * @param noteValue  - текст заметки
-	 * @param noteNumber - номер заметки в хранилище
+	 * @param noteValue  - new text value of the Note
+	 * @param noteNumber - note's number in the storage
 	 */
 	@SuppressWarnings("WeakerAccess")
 	public void editNote(String noteValue, int noteNumber) {
@@ -81,7 +80,7 @@ public class Notepad {
 	}
 
 	/**
-	 * отображает все заметки
+	 * show all notes
 	 */
 	@SuppressWarnings("WeakerAccess")
 	public void showNotes() {
@@ -92,7 +91,7 @@ public class Notepad {
 	}
 
 	/**
-	 * тестовый запуск
+	 * just for test
 	 */
 	public static void main(String[] args) {
 		Notepad nb = new Notepad();
