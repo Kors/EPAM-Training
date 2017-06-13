@@ -1,7 +1,5 @@
 package task06;
 
-import lombok.Getter;
-
 /**
  * This class is used for storing array of notes and working with them
  *
@@ -15,12 +13,11 @@ public class Notepad {
 	 *
 	 * @see Note
 	 */
-	private Note[] notes = new Note[10];
+	Note[] notes = new Note[10];
 	/**
 	 * counting actual number of notes
 	 */
-	@Getter
-	private int notesCounter;
+	int notesCounter;
 
 	/**
 	 * create new Note with given text and add it to storage
