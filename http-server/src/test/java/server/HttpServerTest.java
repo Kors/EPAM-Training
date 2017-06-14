@@ -1,3 +1,5 @@
+package server;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,7 +12,6 @@ public class HttpServerTest {
 	@Before
 	public void init() {
 		httpServer = new HttpServer();
-		httpServer.init();
 	}
 
 	/**
