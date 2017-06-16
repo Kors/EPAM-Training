@@ -14,7 +14,7 @@ class HttpServer {
 
 	public static void main(String[] args) throws IOException {
 		try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-			log.info("Server started on port: " + serverSocket.getLocalPort() + "\n");
+			log.info(() -> "Server started on port: " + serverSocket.getLocalPort() + "\n");
 			while (true) {
 				try (Socket clientSocket = serverSocket.accept()) {
 					log.debug("Client connected");
