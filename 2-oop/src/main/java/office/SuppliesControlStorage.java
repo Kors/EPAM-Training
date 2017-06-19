@@ -9,7 +9,7 @@ class SuppliesControlStorage {
 	private Map<Employee, List<Supply>> empSupplies = new HashMap<>();
 
 	List<Supply> getSupplies(Employee employee) {
-		return empSupplies.get(employee);
+		return empSupplies.getOrDefault(employee, Collections.emptyList());
 	}
 
 	void addSupplyToEmployee(Employee employee, Supply supply) {
