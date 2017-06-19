@@ -2,6 +2,7 @@ package office.supplies;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.ToString;
 
 @EqualsAndHashCode(callSuper = false)
@@ -15,12 +16,8 @@ public class Pen extends Supply{
 	String brand;
 	String model;
 
+	@Getter
 	double price;
-
-	@Override
-	public double getPrice() {
-		return price;
-	}
 
 	public enum Colors {
 		BLUE, BLACK, RED, GREEN
