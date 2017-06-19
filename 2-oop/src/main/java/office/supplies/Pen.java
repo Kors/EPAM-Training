@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @ToString
 @AllArgsConstructor
-public class Pen {
+public class Pen extends Supply{
 
 	Enum<Colors> color;
 	Enum<Types> type;
@@ -17,11 +17,16 @@ public class Pen {
 
 	double price;
 
-	enum Colors {
+	@Override
+	public double getPrice() {
+		return price;
+	}
+
+	public enum Colors {
 		BLUE, BLACK, RED, GREEN
 	}
 
-	enum Types {
+	public enum Types {
 		BALL, HELIUM
 	}
 }
