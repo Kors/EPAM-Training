@@ -44,4 +44,9 @@ public class SuppliesControlStorageTest {
 		assertThat(scs.getSumPrice(employee), equalTo(sumPrice));
 	}
 
+	@Test
+	public void getUnavailableSumPrice() throws Exception {
+		assertThat(scs.getSumPrice(employee), equalTo(0.0));
+	}
+
 }
