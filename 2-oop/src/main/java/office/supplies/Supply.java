@@ -1,5 +1,14 @@
 package office.supplies;
 
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
+
+@EqualsAndHashCode
+@AllArgsConstructor
+@ToString
 public abstract class Supply {
-	public abstract double getPrice();
+	@Getter
+	double price;
 }

@@ -24,7 +24,7 @@ public class SuppliesControlStorageTest {
 
 	@Test
 	public void addSupplyToEmployee() throws Exception {
-		Pen pen = new Pen(Pen.Colors.BLUE, Pen.Types.BALL, "PILOT", "BPGP-10R-F-L", 10.72);
+		Pen pen = new Pen(Pen.Colors.BLUE, "PILOT", "BPGP-10R-F-L", 10.72);
 		scs.addSupplyToEmployee(employee, pen);
 		List<Supply> supplies = scs.getSupplies(employee);
 		assertThat(supplies.size(), equalTo(1));
@@ -36,8 +36,8 @@ public class SuppliesControlStorageTest {
 		double[] prises = {10.72, 24.53};
 		double sumPrice = Arrays.stream(prises).sum();
 
-		Pen pen1 = new Pen(Pen.Colors.BLUE, Pen.Types.BALL, "PILOT", "BPGP-10R-F-L", prises[0]);
-		Pen pen2 = new Pen(Pen.Colors.RED, Pen.Types.HELIUM, "PILOT", "", prises[1]);
+		Pen pen1 = new Pen(Pen.Colors.BLUE, "PILOT", "BPGP-10R-F-L", prises[0]);
+		Pen pen2 = new Pen(Pen.Colors.RED, "PILOT", "", prises[1]);
 		scs.addSupplyToEmployee(employee, pen1);
 		scs.addSupplyToEmployee(employee, pen2);
 

@@ -1,29 +1,25 @@
 package office.supplies;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.ToString;
 
-@EqualsAndHashCode(callSuper = false)
-@ToString
-@AllArgsConstructor
-public class Pen extends Supply{
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class Pen extends Supply {
 
 	Enum<Colors> color;
-	Enum<Types> type;
 
 	String brand;
 	String model;
 
-	@Getter
-	double price;
+	public Pen(Enum<Colors> color, String brand, String model, double price) {
+		super(price);
+		this.color = color;
+		this.brand = brand;
+		this.model = model;
+	}
 
 	public enum Colors {
 		BLUE, BLACK, RED, GREEN
-	}
-
-	public enum Types {
-		BALL, HELIUM
 	}
 }
