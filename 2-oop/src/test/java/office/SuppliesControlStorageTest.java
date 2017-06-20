@@ -1,6 +1,7 @@
 package office;
 
 import office.supplies.Pen;
+import office.supplies.Pencil;
 import office.supplies.Supply;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,10 +37,10 @@ public class SuppliesControlStorageTest {
 		double[] prises = {10.72, 24.53};
 		double sumPrice = Arrays.stream(prises).sum();
 
-		Pen pen1 = new Pen(Pen.Colors.BLUE, "PILOT", "BPGP-10R-F-L", prises[0]);
-		Pen pen2 = new Pen(Pen.Colors.RED, "PILOT", "", prises[1]);
-		scs.addSupplyToEmployee(employee, pen1);
-		scs.addSupplyToEmployee(employee, pen2);
+		Pen pen = new Pen(Pen.Colors.BLUE, "PILOT", "BPGP-10R-F-L", prises[0]);
+		Pencil pencil = new Pencil(Pencil.Hardness.H, prises[1]);
+		scs.addSupplyToEmployee(employee, pen);
+		scs.addSupplyToEmployee(employee, pencil);
 
 		assertThat(scs.getSumPrice(employee), equalTo(sumPrice));
 	}
