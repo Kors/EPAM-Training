@@ -1,11 +1,18 @@
+ext {
+	log4jVersion = "2.8.2"
+	lombokVersion = "1.16.16"
+	junitVersion = "4.12"
+}
+
 subprojects {
 	group 'Epam-Training'
 	version '1.1'
 
 	apply plugin: 'java'
+	apply plugin: 'idea'
 
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
 
 	repositories {
 		mavenCentral()
@@ -18,12 +25,11 @@ subprojects {
 
 	dependencies {
 
-		compile 'org.apache.logging.log4j:log4j-core:+'
+		compile "org.apache.logging.log4j:log4j-core:$log4jVersion"
 
-		compileOnly 'org.projectlombok:lombok:+'
+		compileOnly "org.projectlombok:lombok:$lombokVersion"
 
-		testCompile 'junit:junit:+',
-				'org:hamcrest:hamcrest-core:+'
+		testCompile "junit:junit:$junitVersion"
 	}
 }
 
