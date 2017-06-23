@@ -9,14 +9,9 @@ public class Pen extends Supply {
 
 	Enum<Colors> color;
 
-	String brand;
-	String model;
-
 	public Pen(Enum<Colors> color, String brand, String model, double price) {
-		super(price);
+		super(price, brand, model);
 		this.color = color;
-		this.brand = brand;
-		this.model = model;
 	}
 
 	public enum Colors {
