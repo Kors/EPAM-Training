@@ -2,6 +2,7 @@ package office.supplies;
 
 import java.awt.*;
 
+@SuppressWarnings("WeakerAccess")
 public class ColouredPencil extends Pencil {
 
 	final Color color;

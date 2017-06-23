@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("WeakerAccess")
 public class BeginnerSet {
 	public static List<Supply> getBeginnerSupplySet() {
 		List<Supply> beginnerSet = new ArrayList<>();
@@ -11,6 +12,7 @@ public class BeginnerSet {
 		beginnerSet.add(new Pencil(Pencil.Hardness.HB, 12.20));
 		beginnerSet.add(new ColouredPencil(Color.RED, Pencil.Hardness.H, 17.03));
 		beginnerSet.add(new ColouredPencil(Color.GREEN, Pencil.Hardness.B, 14.89));
+		beginnerSet.add(new Eraser(3.01));
 		return beginnerSet;
 	}
 }
