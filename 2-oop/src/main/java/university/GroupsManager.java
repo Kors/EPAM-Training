@@ -18,13 +18,17 @@ public class GroupsManager {
 				.mapToObj(i -> new Student("Student ¹" + i))
 				.collect(Collectors.toList());
 		distributeStudents(students);
+		setMarks(students);
+		printResults();
 	}
 
 	private void distributeStudents(List<Student> students) {
 		mathsGroup.addStudents(students.get(0), students.get(1), students.get(2));
 		geographyGroup.addStudents(students.get(2), students.get(3), students.get(4));
 		physicsGroup.addStudents(students.get(0), students.get(5));
+	}
 
+	private void setMarks(List<Student> students) {
 		mathsGroup.setMark(students.get(0), 98);
 		mathsGroup.setMark(students.get(1), 3);
 		mathsGroup.setMark(students.get(2), 16);
@@ -35,7 +39,9 @@ public class GroupsManager {
 
 		physicsGroup.setMark(students.get(0), (byte) 9);
 		physicsGroup.setMark(students.get(5), (byte) 2);
+	}
 
+	private void printResults() {
 		mathsGroup.printResults();
 		geographyGroup.printResults();
 		physicsGroup.printResults();
