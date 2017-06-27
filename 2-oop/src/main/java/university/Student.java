@@ -1,4 +1,8 @@
 package university;
 
-public class Student {
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
+class Student {
+	String name;
 }
