@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Log4j2
 class Group<T extends Number> {
@@ -27,6 +28,10 @@ class Group<T extends Number> {
 
 	void setMark(Student student, T mark) {
 		marks.computeIfPresent(student, (s, m) -> mark);
+	}
+
+	Optional<T> getMark(Student student) {
+		return Optional.ofNullable(marks.get(student));
 	}
 
 	void printResults() {
