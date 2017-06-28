@@ -11,11 +11,13 @@ class AtomicSubmarine {
 	void move() {
 		engine.start();
 		log.debug("Atomic Submarine moving");
-		Moveable moveable = this.getClass().getAnnotation(Moveable.class);
-		log.info(() -> "Can move right:" + moveable.canMoveRight() + "\n" +
-				"Can move left:" + moveable.canMoveLeft() + "\n" +
-				"Can move up:" + moveable.canMoveUp() + "\n" +
-				"Can move down:" + moveable.canMoveDown() + "\n");
+		log.debug(() -> {
+			Moveable moveable = this.getClass().getAnnotation(Moveable.class);
+			return "Can move right:" + moveable.canMoveRight() + "\n" +
+					"Can move left:" + moveable.canMoveLeft() + "\n" +
+					"Can move up:" + moveable.canMoveUp() + "\n" +
+					"Can move down:" + moveable.canMoveDown() + "\n";
+		});
 	}
 
 	class AtomicEngine {

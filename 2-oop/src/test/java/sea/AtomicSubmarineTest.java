@@ -1,19 +1,19 @@
 package sea;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
 
-public class AtomicSubmarineTest {
+class AtomicSubmarineTest {
 	@Test
-	//@DisplayName("Лодка отправляется в плавание, её двигаитель заработал") //Junit5
-	public void startEngineToMoveSubmarine() throws Exception {
-		AtomicSubmarine spySubmarine = spy(new AtomicSubmarine());
-		AtomicSubmarine.AtomicEngine spyEngine = spy(spySubmarine.engine);
-		spySubmarine.engine = spyEngine;
-		spySubmarine.move();
-		verify(spySubmarine, times(1)).move();
-		verify(spyEngine, times(1)).start();
+	@DisplayName("Лодка отправляется в плавание, её двигаитель заработал")
+	void startEngineToMoveSubmarine() throws Exception {
+		AtomicSubmarine submarine = new AtomicSubmarine();
+		submarine.engine = spy(submarine.engine);
+		submarine.move();
+		verify(submarine.engine, times(1)).start();
 	}
 
 }

@@ -3,8 +3,8 @@ package office;
 import office.supplies.Pen;
 import office.supplies.Pencil;
 import office.supplies.Supply;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,19 +12,19 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class SuppliesControlStorageTest {
+class SuppliesControlStorageTest {
 
 	private SuppliesControlStorage scs;
 	private Employee employee;
 
-	@Before
-	public void init() throws Exception {
+	@BeforeEach
+	void init() throws Exception {
 		scs = new SuppliesControlStorage();
 		employee = new Employee();
 	}
 
 	@Test
-	public void addSupplyToEmployee() throws Exception {
+	void addSupplyToEmployee() throws Exception {
 		Pen pen = new Pen(Pen.Colors.BLUE, "PILOT", "BPGP-10R-F-L", 10.72);
 		scs.addSupplyToEmployee(employee, pen);
 		List<Supply> supplies = scs.getSupplies(employee);
@@ -33,7 +33,7 @@ public class SuppliesControlStorageTest {
 	}
 
 	@Test
-	public void getSumPrice() throws Exception {
+	void getSumPrice() throws Exception {
 		double[] prises = {10.72, 24.53};
 		double sumPrice = Arrays.stream(prises).sum();
 
@@ -46,7 +46,7 @@ public class SuppliesControlStorageTest {
 	}
 
 	@Test
-	public void getUnavailableSumPrice() throws Exception {
+	void getUnavailableSumPrice() throws Exception {
 		assertThat(scs.getSumPrice(employee), equalTo(0.0));
 	}
 

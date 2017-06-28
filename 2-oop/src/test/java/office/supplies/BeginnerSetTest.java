@@ -1,21 +1,23 @@
 package office.supplies;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.hamcrest.core.IsNull.notNullValue;
 
-public class BeginnerSetTest {
+class BeginnerSetTest {
 
 	@Test
-	public void getBeginnerSupplySet() throws Exception {
+	void getBeginnerSupplySet() throws Exception {
 		List<Supply> oneSet = BeginnerSet.getBeginnerSupplySet();
 		List<Supply> anotherSet = BeginnerSet.getBeginnerSupplySet();
 		assertThat(oneSet, notNullValue());
-		assertTrue("Empty set!", oneSet.size() > 0);
+		assertThat("Empty set!", oneSet.size() > 0);
 		assertThat(oneSet, everyItem(instanceOf(Supply.class)));
 		assertThat(oneSet, equalTo(anotherSet));
 	}

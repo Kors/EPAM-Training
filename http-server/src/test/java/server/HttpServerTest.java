@@ -1,16 +1,17 @@
 package server;
 
-import org.junit.Before;
-import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class HttpServerTest {
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class HttpServerTest {
 
 	private HttpServer httpServer;
 
-	@Before
-	public void init() {
+	@BeforeEach
+	void init() {
 		httpServer = new HttpServer();
 	}
 
@@ -20,12 +21,11 @@ public class HttpServerTest {
 	 * ѕроверим что получаем какой-то ответ.
 	 */
 	@Test
-	public void getAnyAnswer() {
-		HttpServer httpServer = new HttpServer();
+	void getAnyAnswer() {
 		String request = "GET / HTTP/1.0\n" +
 				"Host: kors-server.ru";
-		String response = httpServer.getResponse(request);
-		assertTrue("Couldn't get any http response message.", response != null);
+		String response = HttpServer.getResponse(request);
+		assertTrue(response != null, "Couldn't get any http response message.");
 	}
 
 }

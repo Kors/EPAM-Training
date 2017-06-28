@@ -1,26 +1,26 @@
 package task06;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * It tests lombok
  */
-public class NoteTest {
+class NoteTest {
 
 	private String text = "test note";
 	private Note note = new Note(text);
 
 	@Test
-	public void getValue() {
-		assertEquals("Getting value failed.", text, note.getValue());
+	void getValue() {
+		assertEquals(text, note.getValue(), "Getting value failed.");
 	}
 
 	@Test
-	public void setValue() {
+	void setValue() {
 		String newValue = "new note value";
 		note.setValue(newValue);
-		assertEquals("Getting value failed.", newValue, note.getValue());
+		assertEquals(newValue, note.getValue(), "Getting value failed.");
 	}
 }
