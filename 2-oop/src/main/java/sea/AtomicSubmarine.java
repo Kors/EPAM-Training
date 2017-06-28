@@ -6,7 +6,7 @@ import lombok.extern.log4j.Log4j2;
 @Moveable(canMoveLeft = false)
 class AtomicSubmarine {
 
-	private AtomicEngine engine = new AtomicEngine();
+	AtomicEngine engine = new AtomicEngine();
 
 	void move() {
 		engine.start();

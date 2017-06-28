@@ -2,6 +2,7 @@ ext {
 	log4jVersion = "2.8.2"
 	lombokVersion = "1.16.16"
 	junitVersion = "4.12"
+	mockitoVersion = "2.8.47"
 }
 
 subprojects {
@@ -28,7 +29,8 @@ subprojects {
 
 		compileOnly "org.projectlombok:lombok:$lombokVersion"
 
-		testCompile "junit:junit:$junitVersion"
+		testCompile "junit:junit:$junitVersion",
+				"org.mockito:mockito-core:$mockitoVersion"
 	}
 }
 
