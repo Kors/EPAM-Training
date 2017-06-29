@@ -1,4 +1,5 @@
 rootProject.name = 'Epam-Training'
 include '1-fundamentals',
 		'2-oop',
+		'3-strings',
 		'http-server'
