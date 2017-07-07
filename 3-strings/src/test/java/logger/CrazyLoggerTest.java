@@ -14,13 +14,14 @@ import static org.hamcrest.core.StringContains.containsString;
 
 class CrazyLoggerTest {
 
-	private static CrazyLogger log = new CrazyLogger();
+	private static CrazyLogger log;
 	private PrintStream out = System.out;
 	private ByteOutputStream testStream = new ByteOutputStream();
 	private PrintStream ps = new PrintStream(testStream);
 
 	@BeforeEach
 	void init() {
+		log = new CrazyLogger();
 		log.write("Info note");
 		log.write("Warn note");
 		log.write("Error note");
@@ -43,7 +44,7 @@ class CrazyLoggerTest {
 		log.findAndShow("info");
 		System.setOut(System.out);
 		String result = new String(testStream.getBytes()).trim();
-		assertThat(result, new RegexMatcher("\\d{2}-\\d{2}-\\d{4} : \\d{2}-\\d{2} - .*"));
+		assertThat(result, new RegexMatcher("\\d{2}-\\d{2}-\\d{4} : \\d{2}-\\d{2} - " + "Info note"));
 	}
 
 	@Test
