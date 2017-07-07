@@ -8,7 +8,7 @@ class CrazyLogger {
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY : hh-mm");
 
 	/**
-	 * using ; are not available in this log
+	 * using ";" are not available in this log
 	 */
 	synchronized void write(String s) {
 		LocalDateTime dateTime = LocalDateTime.now();
