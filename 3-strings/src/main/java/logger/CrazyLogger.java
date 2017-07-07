@@ -7,7 +7,7 @@ class CrazyLogger {
 	private StringBuilder data = new StringBuilder();
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY : hh-mm");
 
-	void write(String s) {
+	synchronized void write(String s) {
 		LocalDateTime dateTime = LocalDateTime.now();
 		data.append(dateTime.format(formatter))
 				.append(" - ")
