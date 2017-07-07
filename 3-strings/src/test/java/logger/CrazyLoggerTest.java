@@ -1,6 +1,8 @@
 package logger;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+import org.hamcrest.Description;
+import org.hamcrest.TypeSafeMatcher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,6 +38,15 @@ class CrazyLoggerTest {
 	}
 
 	@Test
+	void logMatchesFormat() {
+		System.setOut(ps);
+		log.findAndShow("info");
+		System.setOut(System.out);
+		String result = new String(testStream.getBytes()).trim();
+		assertThat(result, new RegexMatcher("\\d{2}-\\d{2}-\\d{4} : \\d{2}-\\d{2} - .*"));
+	}
+
+	@Test
 	void noInfoInLog() {
 		System.setOut(ps);
 		log.findAndShow("dog");
@@ -44,4 +55,22 @@ class CrazyLoggerTest {
 		assertThat(result, is(""));
 	}
 
+	class RegexMatcher extends TypeSafeMatcher<String> {
+
+		private final String regex;
+
+		private RegexMatcher(final String regex) {
+			this.regex = regex;
+		}
+
+		@Override
+		public void describeTo(final Description description) {
+			description.appendText("matches regex=`" + regex + "`");
+		}
+
+		@Override
+		public boolean matchesSafely(final String string) {
+			return string.matches(regex);
+		}
+	}
 }
