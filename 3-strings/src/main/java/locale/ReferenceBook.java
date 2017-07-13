@@ -1,20 +1,30 @@
 package locale;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.util.Arrays.asList;
 
 public class ReferenceBook {
+	private static Set<String> encodings = new HashSet<>();
+
+	static {
+		encodings.addAll(asList("", "ru", "en", "ru-RU", "en-GB"));
+	}
 
 	// Отсутствуют различные обработки исключительных ситуаций при вводе как с клавиатуры, так из из ресурсов.
 	public static void main(String args[]) {
-		System.out.printf("Choose your language (en/ru):%nВыберите язык (en/ru):%n");
 		Scanner scanner = new Scanner(System.in);
-		String lang = "";
-		while (!"ru".equalsIgnoreCase(lang) && !"en".equalsIgnoreCase(lang))
+		String lang = null;
+		String enc = Arrays.toString(encodings.toArray(new String[5]));
+		while (!encodings.contains(lang)) {
+			System.out.printf("Choose your language %s:%nВыберите язык %s:%n", enc, enc);
 			lang = scanner.nextLine();
-		Locale locale = Locale.forLanguageTag(lang); //TODO не работает
+		}
+		Locale locale = Locale.forLanguageTag(lang);
 		ResourceBundle myResources = ResourceBundle.getBundle("questions", locale);
+
+		String usingLocale = myResources.getLocale().getDisplayName();
+		System.out.println("Using locale: " + usingLocale);
 
 		String title = myResources.getString("title");
 		System.out.println(title);
@@ -22,15 +32,15 @@ public class ReferenceBook {
 		int questionsCount = Integer.parseInt(myResources.getString("questionsCount"));
 
 		for (int i = 1; i <= questionsCount; i++) {
-			String question = myResources.getString("question" + i);
-			System.out.println(i + ") " + question);
+			String question = myResources.getString("question." + i);
+			System.out.printf("%d) %s%n", i, question);
 		}
 
-		for (int input = 1; input > 0 && input <= questionsCount; ) {
-			input = scanner.nextInt();
-			String question = myResources.getString("reply" + input);
-			System.out.println(myResources.getString("reply"));
-			System.out.println(input + ") " + question);
+		for (int input = scanner.nextInt();
+		     input > 0 && input <= questionsCount;
+		     input = scanner.nextInt()) {
+			String question = myResources.getString("reply." + input);
+			System.out.printf("%s%d) %s%n", myResources.getString("reply"), input, question);
 		}
 	}
 }
