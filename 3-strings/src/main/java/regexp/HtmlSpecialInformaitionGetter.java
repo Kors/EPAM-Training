@@ -17,7 +17,7 @@ public class HtmlSpecialInformaitionGetter {
 		Pattern p = Pattern.compile("[Рр]ис((\\.)|(унке)) \\d+");
 		try (BufferedReader f = new BufferedReader(new FileReader(html))) {
 			List<String> l = f.lines().parallel()
-					.filter((s) -> s.toLowerCase().contains("рис"))
+					.filter((s) -> s.matches(".*[Рр]ис((\\.)|(унке)) \\d+.*"))
 					.map(String::trim)
 					.collect(Collectors.toList());
 			System.out.println(l.size());
@@ -25,6 +25,8 @@ public class HtmlSpecialInformaitionGetter {
 				Matcher m = p.matcher(s);
 				if (m.find())
 					System.out.println(m.group(0));
+				else
+					throw new RuntimeException("Несоответствие в строке! " + s);
 			}
 		}
 	}
