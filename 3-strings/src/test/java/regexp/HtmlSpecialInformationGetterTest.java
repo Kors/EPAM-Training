@@ -29,6 +29,11 @@ class HtmlSpecialInformationGetterTest {
 		assertThat("Wrong link reg.exp.(Count mismatch)", getLinksCount(), is(186));
 	}
 
+	@Test
+	void linksOrderTest() {
+		assertThat(informationGetter.areLinksOrdered(), is(false));
+	}
+
 	private int getLinksCount() {
 		Matcher ma = Pattern.compile(picRefRegExp).matcher(informationGetter.text);
 		int counter = 0;

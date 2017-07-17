@@ -25,11 +25,24 @@ public class HtmlSpecialInformationGetter {
 
 	public static void main(String[] args) throws IOException {
 		HtmlSpecialInformationGetter informationGetter = new HtmlSpecialInformationGetter();
-		log.info(() -> "—сылки автора расположены" + (informationGetter.isLinksOrdered() ? "" : " не") + " по пор€дку");
+		log.info(() -> "—сылки автора расположены" + (informationGetter.areLinksOrdered() ? "" : " не") + " по пор€дку");
+		showSentencesWithLinks();
 	}
 
-	private boolean isLinksOrdered() {
-		return false;
+	boolean areLinksOrdered() {
+		Pattern p = Pattern.compile(picRefRegExp);
+		Matcher ma = p.matcher(text);
+		int lastNumber = 0;
+		while (ma.find()) {
+			int picNumber = Integer.parseInt(ma.group(4));
+			if (picNumber < lastNumber)
+				return false;
+			lastNumber = picNumber;
+		}
+		return true;
+	}
+
+	private static void showSentencesWithLinks() {
 	}
 
 	@SneakyThrows
