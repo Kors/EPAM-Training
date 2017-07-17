@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class HtmlSpecialInformationGetter {
 
 	static final String picRefRegExp = "[Рр]ис((\\.)|(унке)) (\\d+)";
-	private static final String sentenceWithLinkRegExp = "[А-ЯA-Z].+?" + picRefRegExp + "(.*?[^с][.!?])|(.*?[^и].[.!?])|(.*?[^Рр]..[.!?])";
+	private static final String sentenceWithLinkRegExp = "([А-ЯA-Z]([^.]+?))?([^.]*?(" + picRefRegExp + "))+(([.!?])|([^.]*?[^с][.!?])|([^.]*?[^и].[.!?])|([^.]*?[^Рр]..[.!?]))";
 
 	List<String> picBySent = Collections.emptyList(); // для дебага (проще понять где ошибка в регулярке)
 	String text;
@@ -49,6 +49,8 @@ public class HtmlSpecialInformationGetter {
 		List<String> separatedText = Arrays.stream(text.split("<div>"))
 				.map(s -> s.replaceAll("<.*?>", "")) // вырезаем все теги
 				.map(s -> s.replaceAll("^|$", ""))
+				.map(s -> s.replaceAll("\r", ""))
+				.map(s -> s.replaceAll("\n", ""))
 				.map(s -> s.replaceAll("&nbsp;", "")) // вырезаем спецсимволы
 				.collect(Collectors.toList());
 //		show("separatedText:" + separatedText.size());
@@ -72,6 +74,7 @@ public class HtmlSpecialInformationGetter {
 				i++;
 			}
 		}
+//		show("" + i);
 		assert i == 186; // проверка что этим способом не упустили ни одной ссылки
 	}
 
