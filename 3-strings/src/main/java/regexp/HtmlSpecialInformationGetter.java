@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Log4j2
 public class HtmlSpecialInformationGetter {
 
-	static final String picRefRegExp = "[–р]ис((\\.)|(унке)) (\\d+)";
+	static final String picRefRegExp = "[–р]ис((\\.)|(унке)) (\\d+)"; // TODO ссылки типа (–ис. 22 и 24) не учитывают вторую цифру
 	private static final String sentenceWithLinkRegExp = "([ј-яA-Z]([^.]+?))?([^.]*?(" + picRefRegExp + "))+(([.!?])|([^.]*?[^с][.!?])|([^.]*?[^и].[.!?])|([^.]*?[^–р]..[.!?]))";
 
 	List<String> picBySent = Collections.emptyList(); // дл€ дебага (проще пон€ть где ошибка в регул€рке)
