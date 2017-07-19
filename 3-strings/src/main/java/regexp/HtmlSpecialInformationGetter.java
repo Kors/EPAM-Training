@@ -27,7 +27,7 @@ public class HtmlSpecialInformationGetter {
 
 	public static void main(String... args) throws IOException {
 		HtmlSpecialInformationGetter informationGetter = new HtmlSpecialInformationGetter();
-		show("—сылки автора расположены" + (informationGetter.areLinksOrdered() ? "" : " не") + " по пор€дку");
+		show("—сылки автора расположены" + (informationGetter.areLinksOrdered() ? "" : " не") + " по пор€дку.");
 		informationGetter.showSentencesWithLinks();
 	}
 
@@ -48,7 +48,6 @@ public class HtmlSpecialInformationGetter {
 		text = text.substring(text.indexOf("<br style=\"clear:both;\">"), text.indexOf("</body>")); // отрезаем заведомо лишнее
 		List<String> separatedText = Arrays.stream(text.split("<div>"))
 				.map(s -> s.replaceAll("<.*?>", "")) // вырезаем все теги
-				.map(s -> s.replaceAll("^|$", ""))
 				.map(s -> s.replaceAll("\r", ""))
 				.map(s -> s.replaceAll("\n", ""))
 				.map(s -> s.replaceAll("&nbsp;", "")) // вырезаем спецсимволы
@@ -59,7 +58,7 @@ public class HtmlSpecialInformationGetter {
 		for (String s : separatedText) {
 			Matcher sentenceMatcher = sentencePattern.matcher(s);
 			while (sentenceMatcher.find())
-				sentencesWithPicRef.add(sentenceMatcher.group(0));
+				sentencesWithPicRef.add(sentenceMatcher.group(0).trim());
 		}
 //		show("sentencesWithPicRef:" + sentencesWithPicRef.size());
 

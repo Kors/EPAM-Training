@@ -31,7 +31,7 @@ class HtmlSpecialInformationGetterTest {
 		assertThat(informationGetter.areLinksOrdered(), is(false));
 	}
 
-	// при поиске "по простому" найдено 186 ссылки на рисунки.
+	// при поиске "по простому" найдено 186 ссылок на рисунки.
 	// При оптимизациях надо проверять что мы никакие не потеряли.
 	@Test
 	void linkRegExpTest() {
