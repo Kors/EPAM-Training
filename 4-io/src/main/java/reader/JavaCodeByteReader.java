@@ -12,9 +12,8 @@ public class JavaCodeByteReader implements JavaCodeParsable {
 	private void run() throws IOException {
 		String text = readFile();
 		Map<String, Integer> keywordsInFile = parseKeywords(text);
-		String fileName = JavaCodeByteReader.class.getResource("/CodeExample.java").getPath()
-				.replaceFirst("/[^/]+$", "") + "/keywordsParsedByByteReader.txt";
-		System.out.println("write to file:" + fileName);
+		String fileName = "keywordsParsedByByteReader.txt";
+		System.out.println("write to file:" + new File(fileName).getAbsolutePath());
 		writeToFile(keywordsInFile, fileName);
 	}
 
@@ -30,7 +29,7 @@ public class JavaCodeByteReader implements JavaCodeParsable {
 
 	void writeToFile(Map<String, Integer> keywordsInFile, String fileName) throws IOException {
 		byte[] separator1 = " ".getBytes();
-		byte[] separator2 = "\n".getBytes();
+		byte[] separator2 = System.lineSeparator().getBytes();
 		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fileName))) {
 			for (Map.Entry<String, Integer> entry : keywordsInFile.entrySet()) {
 				bos.write(entry.getKey().getBytes());
