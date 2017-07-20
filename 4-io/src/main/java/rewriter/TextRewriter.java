@@ -24,7 +24,7 @@ public class TextRewriter {
 
 	private static void writeToFile(String text, String fileName) throws IOException {
 		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fileName))) {
-				bos.write(text.getBytes("UTF-16"));
+			bos.write(text.getBytes("UTF-16"));
 		}
 	}
 }
