@@ -9,20 +9,13 @@ import java.util.Scanner;
 
 @Log4j2
 public class FileManager {
+	// считаем что ключевые слова (exit,create,delete,add) не могут являться названиями файлов и директорий.
 
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
+	public static void main(String[] args) {
 		try (Scanner scanner = new Scanner(System.in)) { // при закрытии закроет входной поток программе.
 			StringBuilder path = new StringBuilder(".");
 			for (String input = ""; !input.equals("exit"); ) {
-				File currentDir = new File(path.toString());
-				String filesAndDirs[] = currentDir.list();
-				System.out.println("Текущий каталог: " + currentDir.getAbsolutePath());
-				System.out.println("Файлы/директории:");
-				if (filesAndDirs != null)
-					for (String file : filesAndDirs)
-						System.out.println(file);
-				System.out.println("Введите файл или директорию для чтения:");
-				input = scanner.nextLine();
+				input = getNewCmd(scanner, path.toString());
 				switch (input) {
 					case "create":
 						createTxtFile(scanner, path.toString());
@@ -34,22 +27,44 @@ public class FileManager {
 						addToTxtFile(scanner, path.toString());
 						break;
 					case "..":
-						path.delete(path.lastIndexOf("/"), path.length());
+						int index = path.lastIndexOf("/");
+						path.delete(index > 0 ? index : 0, path.length());
 						break;
 					default:
-						path.append("/").append(input);
+						if (path.length() > 0)
+							path.append("/");
+						path.append(input);
 				}
 			}
 		}
 	}
 
-	private static void createTxtFile(Scanner scanner, String path) throws IOException {
+	private static String getNewCmd(Scanner scanner, String path) {
+		File currentDir = new File(path);
+		String filesAndDirs[] = currentDir.list();
+		System.out.println("Текущий каталог: " + currentDir.getAbsolutePath());
+		System.out.println("Файлы/директории:");
+		if (filesAndDirs != null)
+			for (String file : filesAndDirs)
+				System.out.println(file);
+		System.out.println("Введите файл или директорию для чтения или команду (exit,create,delete,add):");
+		return scanner.nextLine();
+	}
+
+	private static void createTxtFile(Scanner scanner, String path) {
 		System.out.println("Введите название создаваемого файла:");
 		String fileName = scanner.nextLine();
-		if (new File(path + "/" + fileName + ".txt").createNewFile())
-			System.out.println("Файл успешно создан.");
-		else
-			System.out.println("Не удалось создать файл.");
+		File file = new File(path + "/" + fileName + ".txt");
+		tryToCreate(file);
+	}
+
+	private static void tryToCreate(File file) {
+		try {
+			System.out.println(file.createNewFile() ? "Файл успешно создан." : "Не удалось создать файл.");
+		} catch (IOException e) {
+			log.error("File creation failed!", e);
+		}
+
 	}
 
 	private static void deleteTxtFile(Scanner scanner, String path) {
@@ -79,7 +94,7 @@ public class FileManager {
 			fw.append(text);
 			System.out.println("Текст успешно добавлен в файл.");
 		} catch (IOException e) {
-			log.error("Writing to file failed!", e);
+			log.error("Writing into file failed!", e);
 		}
 	}
 }
