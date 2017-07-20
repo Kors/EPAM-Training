@@ -1,7 +1,6 @@
 package rewriter;
 
 import java.io.*;
-import java.util.Map;
 
 public class TextRewriter {
 
