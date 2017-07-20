@@ -1,6 +1,7 @@
 package rewriter;
 
 import java.io.*;
+import java.util.Map;
 
 public class TextRewriter {
 
@@ -15,15 +16,15 @@ public class TextRewriter {
 		StringBuilder sb = new StringBuilder();
 		String separator = System.lineSeparator();
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(
-				new FileInputStream(TextRewriter.class.getResource("/utf-8_cyrillic_text.txt").getFile()), "UTF8"))) {
+				new FileInputStream(TextRewriter.class.getResource("/utf-8_cyrillic_text.txt").getFile()), "UTF-8"))) {
 			br.lines().forEach(s -> sb.append(s).append(separator));
 		}
 		return sb.toString();
 	}
 
 	private static void writeToFile(String text, String fileName) throws IOException {
-		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName), "UTF16"))) {
-			bw.write(text);
+		try (BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(fileName))) {
+				bos.write(text.getBytes("UTF-16"));
 		}
 	}
 }
