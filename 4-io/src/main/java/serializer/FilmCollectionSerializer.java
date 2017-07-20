@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class FilmCollectionSerializer {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		HashSet<Tuple> filmCollection = load();
+		HashSet<Tuple> filmCollection = load("filmCollection");
 		filmCollection.add(Tuple.get("В погоне за http-сервером", "Корсиков Илья"));
 		String film;
 		String actor;
@@ -22,11 +22,11 @@ public class FilmCollectionSerializer {
 		}
 		filmCollection.add(Tuple.get(film, actor));
 		System.out.println(filmCollection);
-		save(filmCollection);
+		save(filmCollection,"filmCollection");
 	}
 
-	private static HashSet<Tuple> load() throws IOException, ClassNotFoundException {
-		File file = new File("filmCollection");
+	static HashSet<Tuple> load(String fileName) throws IOException, ClassNotFoundException {
+		File file = new File(fileName);
 		if (!file.exists())
 			return new HashSet<>();
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
@@ -35,8 +35,8 @@ public class FilmCollectionSerializer {
 		}
 	}
 
-	private static void save(HashSet<Tuple> filmCollection) throws IOException {
-		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("filmCollection"))) {
+	static void save(HashSet<Tuple> filmCollection,String fileName) throws IOException {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
 			oos.writeObject(filmCollection);
 		}
 	}
