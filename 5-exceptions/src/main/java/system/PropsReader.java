@@ -38,7 +38,7 @@ public class PropsReader {
 			try {
 				loadProps(propsPath);
 			} catch (IOException e) {
-				log.error(() -> "Reading properties from '" + propsPath + "' failed.", e);
+				log.error(() -> String.format("Reading properties from '%s' failed.", propsPath), e);
 			}
 		}
 	}
@@ -50,7 +50,7 @@ public class PropsReader {
 	private void readAllProps() {
 		Set<String> names = props.stringPropertyNames();
 		for (String key : names)
-			System.out.println(key + " = " + readProperty(key));
+			System.out.printf("%s = %s%n", key, readProperty(key));
 	}
 
 
