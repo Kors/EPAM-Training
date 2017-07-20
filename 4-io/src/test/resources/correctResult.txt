@@ -1,0 +1,10 @@
+new 7
+private 1
+package 1
+static 3
+void 1
+import 6
+public 3
+for 4
+class 1
+int 7
