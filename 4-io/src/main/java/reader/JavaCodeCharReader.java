@@ -19,9 +19,10 @@ public class JavaCodeCharReader implements JavaCodeParsable {
 
 	String readFile() throws IOException {
 		StringBuilder sb = new StringBuilder();
+		String separator = System.lineSeparator();
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(
 				JavaCodeByteReader.class.getResourceAsStream("/CodeExample.java")))) {
-			br.lines().forEach(sb::append);
+			br.lines().forEach(s -> sb.append(s).append(separator));
 		}
 		return sb.toString();
 	}
