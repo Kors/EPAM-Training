@@ -35,16 +35,16 @@ public class PropsReader {
 		while (props.isEmpty()) {
 			System.out.println("Ведите файл для чтения properties:");
 			String propsPath = scanner.nextLine();
-			try {
-				loadProps(propsPath);
-			} catch (IOException e) {
-				log.error(() -> String.format("Reading properties from '%s' failed.", propsPath), e);
-			}
+			loadProps(propsPath);
 		}
 	}
 
-	private void loadProps(String propsPath) throws IOException {
-		props.load(new FileInputStream(propsPath));
+	private void loadProps(String propsPath) {
+		try {
+			props.load(new FileInputStream(propsPath));
+		} catch (IOException e) {
+			log.error(() -> String.format("Reading properties from '%s' failed.", propsPath), e);
+		}
 	}
 
 	private void readAllProps() {
