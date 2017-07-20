@@ -1,9 +1,6 @@
 package reader;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Map;
 
 public class JavaCodeCharReader implements JavaCodeParsable {
@@ -13,12 +10,30 @@ public class JavaCodeCharReader implements JavaCodeParsable {
 	}
 
 	private void run() throws IOException {
+		String text = readFile();
+		Map<String, Integer> keywordsInFile = parseKeywords(text);
+		String fileName = "keywordsParsedByCharReader.txt";
+		System.out.println("write to file:" + new File(fileName).getAbsolutePath());
+		writeToFile(keywordsInFile, fileName);
 	}
 
 	String readFile() throws IOException {
-		return null;
+		StringBuilder sb = new StringBuilder();
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(
+				JavaCodeByteReader.class.getResourceAsStream("/CodeExample.java")))) {
+			br.lines().forEach(sb::append);
+		}
+		return sb.toString();
 	}
 
 	void writeToFile(Map<String, Integer> keywordsInFile, String fileName) throws IOException {
+		try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fileName)))) {
+			for (Map.Entry<String, Integer> entry : keywordsInFile.entrySet()) {
+				bw.write(entry.getKey());
+				bw.write(" ");
+				bw.write(entry.getValue().toString());
+				bw.newLine();
+			}
+		}
 	}
 }
