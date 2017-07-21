@@ -40,8 +40,8 @@ public class PropsReader {
 	}
 
 	void loadProps(String propsPath) {
-		try {
-			props.load(new FileInputStream(propsPath));
+		try (FileInputStream fis = new FileInputStream(propsPath)) {
+			props.load(fis);
 		} catch (IOException e) {
 			log.error(() -> String.format("Reading properties from '%s' failed.", propsPath), e);
 		}
