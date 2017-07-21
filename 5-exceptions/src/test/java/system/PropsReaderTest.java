@@ -5,6 +5,7 @@ import org.hamcrest.core.IsEqual;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ class PropsReaderTest {
 	@Test
 	void loadProps() {
 		reader.loadProps("/noSuchFile.properties");
-		assertThat(reader.props.entrySet(), IsEqual.equalTo(new HashMap<>().entrySet()));
+		assertThat(reader.props.entrySet(), IsEqual.equalTo(Collections.emptyMap().entrySet()));
 
 		reader.loadProps(propsPath);
 		assertThat(reader.props.entrySet(), IsEqual.equalTo(data.entrySet()));
