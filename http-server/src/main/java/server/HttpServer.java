@@ -30,27 +30,20 @@ class HttpServer {
 
 	static void writeResponse(Socket socket) throws IOException {
 		OutputStream outputStream = socket.getOutputStream();
-		outputStream.write(getResponse("some request from client").getBytes());
+		writeHeader(outputStream, 73);
+		writePage(outputStream, "some request from client");
 		outputStream.flush();
 	}
 
-	static String getResponse(String request) {
-		String page = getPage();
-		String header = getHeader(page.length());
-		return header + page;
-	}
-
-	private static String getHeader(int length) {
-		return "HTTP/1.1 200 OK\r\n" +
+	private static void writeHeader(OutputStream outputStream, int length) throws IOException {
+		outputStream.write(String.format("HTTP/1.1 200 OK\r\n" +
 				"Server: kors-server\r\n" +
 				"Content-Type: text/html\r\n" +
-				"Content-Length: " + length + "\r\n" +
-				"Connection: close\r\n\r\n";
+				"Content-Length: %d\r\n" +
+				"Connection: close\r\n\r\n", length).getBytes());
 	}
 
-	private static String getPage() {
-		return "<html><body><h1>" +
-				"La-la-la! It works and I'm happy!!! =)" +
-				"</h1></body></html>";
+	private static void writePage(OutputStream outputStream, String request) throws IOException {
+		outputStream.write("<html><body><h1>La-la-la! It works and I'm happy!!! =)</h1></body></html>".getBytes());
 	}
 }
