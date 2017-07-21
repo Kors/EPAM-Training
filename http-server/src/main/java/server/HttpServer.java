@@ -15,6 +15,7 @@ class HttpServer {
 	public static void main(String[] args) throws IOException {
 		try (ServerSocket serverSocket = new ServerSocket(PORT)) {
 			log.info(() -> "Server started on port: " + serverSocket.getLocalPort() + "\n");
+			//noinspection InfiniteLoopStatement
 			while (true) {
 				try (Socket clientSocket = serverSocket.accept()) {
 					log.debug("Client connected");
@@ -27,7 +28,7 @@ class HttpServer {
 		}
 	}
 
-	private static void writeResponse(Socket socket) throws IOException {
+	static void writeResponse(Socket socket) throws IOException {
 		OutputStream outputStream = socket.getOutputStream();
 		outputStream.write(getResponse("some request from client").getBytes());
 		outputStream.flush();
