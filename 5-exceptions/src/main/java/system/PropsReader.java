@@ -11,7 +11,7 @@ import java.util.Set;
 @Log4j2
 public class PropsReader {
 
-	private Properties props = new Properties();
+	Properties props = new Properties();
 
 	public static void main(String[] args) {
 		new PropsReader().run();
@@ -24,7 +24,7 @@ public class PropsReader {
 				System.out.println("¬ведите название property, которую необходимо прочитать:");
 				key = scanner.nextLine();
 				if ("all".equals(key))
-					readAllProps();
+					showAllProps();
 				else
 					System.out.println(readProperty(key));
 			}
@@ -39,7 +39,7 @@ public class PropsReader {
 		}
 	}
 
-	private void loadProps(String propsPath) {
+	void loadProps(String propsPath) {
 		try {
 			props.load(new FileInputStream(propsPath));
 		} catch (IOException e) {
@@ -47,14 +47,14 @@ public class PropsReader {
 		}
 	}
 
-	private void readAllProps() {
+	private void showAllProps() {
 		Set<String> names = props.stringPropertyNames();
 		for (String key : names)
 			System.out.printf("%s = %s%n", key, readProperty(key));
 	}
 
 
-	private String readProperty(String key) {
+	String readProperty(String key) {
 		return props.getProperty(key);
 	}
 }
