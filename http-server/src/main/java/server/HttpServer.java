@@ -18,7 +18,7 @@ class HttpServer {
 			while (true) {
 				try (Socket clientSocket = serverSocket.accept()) {
 					log.debug("Client connected");
-					new SocketProcessor(clientSocket).run();
+					new Thread(new SocketProcessor(clientSocket)).run();
 					log.debug("done");
 				} catch (IOException e) {
 					log.error("Connection failed", e);
