@@ -10,24 +10,25 @@ import java.net.Socket;
 public class SocketProcessor implements Runnable {
 
 	private Socket socket;
+	private OutputStream outputStream;
 
-	SocketProcessor(Socket socket) {
+	SocketProcessor(Socket socket) throws IOException {
 		this.socket = socket;
+		outputStream = socket.getOutputStream();
 	}
 
 	@Override
 	public void run() {
 		try (Socket clientSocket = socket) {
-			OutputStream outputStream = socket.getOutputStream();
-			writeHeader(outputStream, 73);
-			writePage(outputStream, "some request from client");
+			writeHeader(73);
+			writePage("some request from client");
 			outputStream.flush();
 		} catch (IOException e) {
 			log.error(e);
 		}
 	}
 
-	private void writeHeader(OutputStream outputStream, int length) throws IOException {
+	private void writeHeader(int length) throws IOException {
 		outputStream.write(String.format("HTTP/1.1 200 OK\r\n" +
 				"Server: kors-server\r\n" +
 				"Content-Type: text/html\r\n" +
@@ -35,7 +36,7 @@ public class SocketProcessor implements Runnable {
 				"Connection: close\r\n\r\n", length).getBytes());
 	}
 
-	private void writePage(OutputStream outputStream, String request) throws IOException {
+	private void writePage(String request) throws IOException {
 		outputStream.write("<html><body><h1>La-la-la! It works and I'm happy!!! =)</h1></body></html>".getBytes());
 	}
 }
