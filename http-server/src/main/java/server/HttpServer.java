@@ -11,7 +11,7 @@ class HttpServer {
 
 	private static final int PORT = 8080;
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String... args) {
 		try (ServerSocket serverSocket = new ServerSocket(PORT)) {
 			log.info(() -> "Server started on port: " + serverSocket.getLocalPort() + "\n");
 			while (!Thread.currentThread().isInterrupted()) {
@@ -23,6 +23,8 @@ class HttpServer {
 					log.error("Connection failed", e);
 				}
 			}
+		} catch (IOException e) {
+			log.error("Start http-server failed", e);
 		}
 	}
 }
