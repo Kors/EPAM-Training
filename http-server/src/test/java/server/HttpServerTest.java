@@ -14,14 +14,14 @@ import java.net.Socket;
 @Log4j2
 class HttpServerTest {
 
-	static Thread serverThread;
+	private static Thread serverThread;
 
 	private int PORT = 8080;
 	private String REQUEST = "GET / HTTP/1.1\r\n\r\n"; // TODO нормальный запрос сделать
 
 	@BeforeAll
 	static void setUp() {
-		serverThread = new Thread(HttpServer::main);
+		serverThread = new Thread(HttpServer::main, "httpServer");
 		serverThread.start();
 	}
 
