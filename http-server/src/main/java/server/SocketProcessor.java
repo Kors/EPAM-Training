@@ -17,19 +17,13 @@ public class SocketProcessor implements Runnable {
 
 	@Override
 	public void run() {
-		try {
+		try (Socket clientSocket = socket) {
 			OutputStream outputStream = socket.getOutputStream();
 			writeHeader(outputStream, 73);
 			writePage(outputStream, "some request from client");
 			outputStream.flush();
 		} catch (IOException e) {
 			log.error(e);
-		} finally {
-			try {
-				socket.close();
-			} catch (IOException e) {
-				log.error("Closing socket failed", e);
-			}
 		}
 	}
 
