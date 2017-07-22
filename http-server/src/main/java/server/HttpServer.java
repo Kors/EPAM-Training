@@ -14,11 +14,10 @@ class HttpServer {
 	public static void main(String[] args) throws IOException {
 		try (ServerSocket serverSocket = new ServerSocket(PORT)) {
 			log.info(() -> "Server started on port: " + serverSocket.getLocalPort() + "\n");
-			//noinspection InfiniteLoopStatement
-			while (true) {
+			while (!Thread.currentThread().isInterrupted()) {
 				try (Socket clientSocket = serverSocket.accept()) {
 					log.debug("Client connected");
-					new Thread(new SocketProcessor(clientSocket)).run();
+					new Thread(new SocketProcessor(clientSocket)).start();
 					log.debug("done");
 				} catch (IOException e) {
 					log.error("Connection failed", e);

@@ -24,6 +24,12 @@ public class SocketProcessor implements Runnable {
 			outputStream.flush();
 		} catch (IOException e) {
 			log.error(e);
+		} finally {
+			try {
+				socket.close();
+			} catch (IOException e) {
+				log.error("Closing socket failed", e);
+			}
 		}
 	}
 
