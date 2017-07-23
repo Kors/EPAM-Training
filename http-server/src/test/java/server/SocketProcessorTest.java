@@ -1,5 +1,6 @@
 package server;
 
+import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,12 +14,28 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 class SocketProcessorTest {
 
-	private Socket mockSocket;
+	static final String REQUEST =
+			"GET http://www.kors-server.ru/news.html?login=Ilya%20Korsikov&password=VeryStrongPassword HTTP/1.1\\r\\n" +
+					"Host: www.site.ru\\r\\n" +
+					"Referer: http://www.site.ru/index.html\\r\\n" +
+					"Cookie: income=1\\r\\n" +
+					"\\r\\n";
+
 	private SocketProcessor processor;
+	private ByteInputStream testInputStream;
+	private ByteOutputStream testOutputStream;
 
 	@BeforeEach
 	void setUp() throws IOException {
-		mockSocket = Mockito.mock(Socket.class);
+		Socket mockSocket = Mockito.mock(Socket.class);
+
+		testInputStream = new ByteInputStream();
+		testInputStream.setBuf(REQUEST.getBytes());
+		Mockito.when(mockSocket.getInputStream()).thenReturn(testInputStream);
+
+		testOutputStream = new ByteOutputStream();
+		Mockito.when(mockSocket.getOutputStream()).thenReturn(testOutputStream);
+
 		processor = new SocketProcessor(mockSocket);
 	}
 
@@ -27,10 +44,8 @@ class SocketProcessorTest {
 	 */
 	@Test
 	void simpleResponse() throws Exception {
-		ByteOutputStream testStream = new ByteOutputStream();
-		Mockito.when(mockSocket.getOutputStream()).thenReturn(testStream);
 		processor.run();
-		assertThat(new String(testStream.getBytes()).trim(),
+		assertThat(new String(testOutputStream.getBytes()).trim(),
 				Is.is("HTTP/1.1 200 OK\r\n" +
 						"Server: kors-server\r\n" +
 						"Content-Type: text/html\r\n" +
