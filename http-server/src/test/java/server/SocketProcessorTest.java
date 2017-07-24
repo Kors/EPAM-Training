@@ -62,4 +62,16 @@ class SocketProcessorTest {
 				));
 	}
 
+	@Test
+	void fileResponse() throws Exception {
+		FileChannel fc = FileChannel.open(Paths.get(SocketProcessor.class.getResource("/testPage.html").toURI()));
+		ByteBuffer b = ByteBuffer.allocate(1024);
+		b.put(RESPONSE_TITLE.getBytes());
+		fc.read(b);
+		SocketProcessor processor = new FilesOnlyResponder(mockSocket);
+		processor.run();
+		assertThat(new String(testOutputStream.getBytes()),
+				Is.is(new String(b.array())));
+	}
+
 }
