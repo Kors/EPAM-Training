@@ -17,7 +17,7 @@ class HttpServer {
 			ForkJoinPool pool = ForkJoinPool.commonPool();
 			while (!Thread.currentThread().isInterrupted()) {
 				log.debug("Client connected");
-				pool.execute(new SocketProcessor(serverSocket.accept()));
+				pool.execute(new HelloWorldResponder(serverSocket.accept()));
 			}
 		} catch (IOException e) {
 			log.error("Start http-server failed", e);

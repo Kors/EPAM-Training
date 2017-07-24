@@ -11,11 +11,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Log4j2
-public class SocketProcessor implements Runnable {
+public abstract class SocketProcessor implements Runnable {
 
 	private Socket socket;
-	private OutputStream outputStream;
 	private final InputStream inputStream;
+	final OutputStream outputStream;
 
 	SocketProcessor(Socket socket) throws IOException {
 		this.socket = socket;
@@ -71,7 +71,7 @@ public class SocketProcessor implements Runnable {
 
 	private void writeResponse(HttpRequest httpRequest) throws IOException {
 		writeHeader(73);
-		writePage("some request from client");
+		writePage(httpRequest);
 		outputStream.flush();
 	}
 
@@ -83,7 +83,5 @@ public class SocketProcessor implements Runnable {
 				"Connection: close\r\n\r\n", length).getBytes());
 	}
 
-	private void writePage(String request) throws IOException {
-		outputStream.write("<html><body><h1>La-la-la! It works and I'm happy!!! =)</h1></body></html>".getBytes());
-	}
+	abstract void writePage(HttpRequest httpRequest);
 }

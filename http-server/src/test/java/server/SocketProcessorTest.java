@@ -9,6 +9,9 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -21,13 +24,20 @@ class SocketProcessorTest {
 					"Cookie: income=1\\r\\n" +
 					"\\r\\n";
 
-	private SocketProcessor processor;
+	static final String RESPONSE_TITLE =
+			"HTTP/1.1 200 OK\r\n" +
+					"Server: kors-server\r\n" +
+					"Content-Type: text/html\r\n" +
+					"Content-Length: 73\r\n" +
+					"Connection: close\r\n\r\n";
+
+	private Socket mockSocket;
 	private ByteInputStream testInputStream;
 	private ByteOutputStream testOutputStream;
 
 	@BeforeEach
 	void setUp() throws IOException {
-		Socket mockSocket = Mockito.mock(Socket.class);
+		mockSocket = Mockito.mock(Socket.class);
 
 		testInputStream = new ByteInputStream();
 		testInputStream.setBuf(REQUEST.getBytes());
@@ -35,8 +45,6 @@ class SocketProcessorTest {
 
 		testOutputStream = new ByteOutputStream();
 		Mockito.when(mockSocket.getOutputStream()).thenReturn(testOutputStream);
-
-		processor = new SocketProcessor(mockSocket);
 	}
 
 	/**
@@ -44,13 +52,10 @@ class SocketProcessorTest {
 	 */
 	@Test
 	void simpleResponse() throws Exception {
+		SocketProcessor processor = new HelloWorldResponder(mockSocket);
 		processor.run();
 		assertThat(new String(testOutputStream.getBytes()).trim(),
-				Is.is("HTTP/1.1 200 OK\r\n" +
-						"Server: kors-server\r\n" +
-						"Content-Type: text/html\r\n" +
-						"Content-Length: 73\r\n" +
-						"Connection: close\r\n\r\n" +
+				Is.is(RESPONSE_TITLE +
 						"<html><body><h1>" +
 						"La-la-la! It works and I'm happy!!! =)" +
 						"</h1></body></html>"
