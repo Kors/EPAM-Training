@@ -17,7 +17,7 @@ class HttpServerTest {
 	private static Thread serverThread;
 
 	private int PORT = 8080;
-	private String REQUEST = "GET / HTTP/1.1\r\n\r\n"; // TODO нормальный запрос сделать
+	private String REQUEST = "GET /testPage.html HTTP/1.1\r\n\r\n"; // TODO нормальный запрос сделать
 
 	@BeforeAll
 	static void setUp() {

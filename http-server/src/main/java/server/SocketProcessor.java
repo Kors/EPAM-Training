@@ -70,17 +70,30 @@ public abstract class SocketProcessor implements Runnable {
 	}
 
 	private void writeResponse(HttpRequest httpRequest) throws IOException {
-		writeHeader(73);
+		writeHeader(getHeaderProps(httpRequest));
 		writePage(httpRequest);
 		outputStream.flush();
 	}
 
-	private void writeHeader(int length) throws IOException {
-		outputStream.write(String.format("HTTP/1.1 200 OK\r\n" +
-				"Server: kors-server\r\n" +
-				"Content-Type: text/html\r\n" +
-				"Content-Length: %d\r\n" +
-				"Connection: close\r\n\r\n", length).getBytes());
+	abstract Map<String, String> getHeaderProps(HttpRequest httpRequest);
+
+	private void writeHeader(Map<String, String> headerProps) throws IOException {
+		outputStream.write(formatHeader(
+				headerProps.getOrDefault("code", "200 OK"),
+				headerProps.getOrDefault("contentType", "text/html"),
+				headerProps.getOrDefault("length", "1024")).getBytes());
+	}
+
+	static String formatHeader(String code, String contentType, String length) {
+		return String.format(
+				"HTTP/1.1 %s\r\n" +
+						"Server: kors-server\r\n" +
+						"Content-Type: %s\r\n" +
+						"Content-Length: %s\r\n" +
+						"Connection: close\r\n\r\n",
+				code,
+				contentType,
+				length);
 	}
 
 	abstract void writePage(HttpRequest httpRequest);

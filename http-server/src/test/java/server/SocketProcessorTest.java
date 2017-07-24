@@ -17,19 +17,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 class SocketProcessorTest {
 
-	static final String REQUEST =
-			"GET http://www.kors-server.ru/news.html?login=Ilya%20Korsikov&password=VeryStrongPassword HTTP/1.1\\r\\n" +
+	private static final String REQUEST =
+			"GET /testPage.html?login=Ilya%20Korsikov&password=VeryStrongPassword HTTP/1.1\\r\\n" +
 					"Host: www.site.ru\\r\\n" +
 					"Referer: http://www.site.ru/index.html\\r\\n" +
 					"Cookie: income=1\\r\\n" +
 					"\\r\\n";
-
-	static final String RESPONSE_TITLE =
-			"HTTP/1.1 200 OK\r\n" +
-					"Server: kors-server\r\n" +
-					"Content-Type: text/html\r\n" +
-					"Content-Length: 73\r\n" +
-					"Connection: close\r\n\r\n";
 
 	private Socket mockSocket;
 	private ByteInputStream testInputStream;
@@ -47,18 +40,13 @@ class SocketProcessorTest {
 		Mockito.when(mockSocket.getOutputStream()).thenReturn(testOutputStream);
 	}
 
-	/**
-	 * “ест на соответствие ответа ожидаемому
-	 */
 	@Test
 	void simpleResponse() throws Exception {
 		SocketProcessor processor = new HelloWorldResponder(mockSocket);
 		processor.run();
 		assertThat(new String(testOutputStream.getBytes()).trim(),
-				Is.is(RESPONSE_TITLE +
-						"<html><body><h1>" +
-						"La-la-la! It works and I'm happy!!! =)" +
-						"</h1></body></html>"
+				Is.is(SocketProcessor.formatHeader("200 OK", "text/html", "73") +
+						HelloWorldResponder.httpMsg
 				));
 	}
 
@@ -66,7 +54,7 @@ class SocketProcessorTest {
 	void fileResponse() throws Exception {
 		FileChannel fc = FileChannel.open(Paths.get(SocketProcessor.class.getResource("/testPage.html").toURI()));
 		ByteBuffer b = ByteBuffer.allocate(1024);
-		b.put(RESPONSE_TITLE.getBytes());
+		b.put(SocketProcessor.formatHeader("200 OK", "text/html", "187").getBytes());
 		fc.read(b);
 		SocketProcessor processor = new FilesOnlyResponder(mockSocket);
 		processor.run();

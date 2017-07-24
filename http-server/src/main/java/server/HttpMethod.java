@@ -1,5 +1,5 @@
 package server;
 
 public enum HttpMethod {
-	GET, POST, UNKNOWN
+	GET, HEAD, POST, UNKNOWN
 }
