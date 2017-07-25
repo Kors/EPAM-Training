@@ -13,8 +13,7 @@ import java.util.Map;
 @Log4j2
 class FilesOnlyResponder extends SocketProcessor {
 
-	private File f;
-	private boolean writeBody = true;
+	private File file;
 
 	FilesOnlyResponder(Socket socket) throws IOException {
 		super(socket);
@@ -27,33 +26,39 @@ class FilesOnlyResponder extends SocketProcessor {
 		m.put("length", "0");
 		if (httpRequest.getMethod() != HttpMethod.GET && httpRequest.getMethod() != HttpMethod.HEAD) {
 			m.put("code", "501 Not Implemented");
-			writeBody = false;
 			return m;
 		}
-		if (httpRequest.getMethod() == HttpMethod.HEAD)
-			writeBody = false;
-		String file = httpRequest.getPath();
-		if (file.isEmpty() || file.endsWith("/"))
-			file += "index.html";
-		f = new File(new File(FilesOnlyResponder.class.getResource("/web/testPage.html").getFile()).getParent(), file);
-		if (f.exists()) {
+		if (getFile(httpRequest).exists()) {
 			m.put("code", "200 OK");
-			m.put("length", String.valueOf(f.length()));
+			m.put("length", String.valueOf(file.length()));
 		} else {
 			m.put("code", "404 Not Found");
-			writeBody = false;
 		}
 		return m;
 	}
 
+	private File getFile(HttpRequest httpRequest) {
+		if (file != null)
+			return file;
+		String path = httpRequest.getPath();
+		if (path.isEmpty() || path.endsWith("/"))
+			path += "index.html";
+		file = new File(getParentPath(), path);
+		log.debug(file);
+		return file;
+	}
+
+	private String getParentPath() {
+		return new File(FilesOnlyResponder.class.getResource("/web/testPage.html").getFile()).getParent();
+	}
+
 	@Override
 	void writePage(HttpRequest httpRequest) {
-		if (!writeBody)
+		if (!file.exists() || httpRequest.getMethod() == HttpMethod.HEAD)
 			return;
-		log.debug(f);
 		try {
 			ByteBuffer bb = ByteBuffer.allocate(1024);
-			FileChannel fc = FileChannel.open(f.toPath());
+			FileChannel fc = FileChannel.open(file.toPath());
 			for (int len; (len = fc.read(bb)) != -1; ) {
 				outputStream.write(bb.array(), 0, len);
 				bb.clear();
