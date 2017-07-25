@@ -26,14 +26,13 @@ class SocketProcessorTest {
 					"\\r\\n";
 
 	private Socket mockSocket;
-	private ByteInputStream testInputStream;
 	private ByteOutputStream testOutputStream;
 
 	@BeforeEach
 	void setUp() throws IOException {
 		mockSocket = Mockito.mock(Socket.class);
 
-		testInputStream = new ByteInputStream();
+		ByteInputStream testInputStream = new ByteInputStream();
 		testInputStream.setBuf(REQUEST.getBytes());
 		Mockito.when(mockSocket.getInputStream()).thenReturn(testInputStream);
 
@@ -62,7 +61,7 @@ class SocketProcessorTest {
 				"Wed, 21 Oct 2015 07:28:00 GMT")
 				.getBytes());
 		fc.read(b);
-		SocketProcessor processor = new FilesOnlyResponder(mockSocket);
+		SocketProcessor processor = new FilesOnlyResponder(mockSocket, p.getParent().toFile().getAbsolutePath());
 		processor.run();
 		assertThat(new String(testOutputStream.getBytes()),
 				Is.is(new String(b.array())));

@@ -38,7 +38,7 @@ public abstract class SocketProcessor implements Runnable {
 
 	@Override
 	public void run() {
-		try (Socket clientSocket = socket) {
+		try (@SuppressWarnings("unused") Socket clientSocket = socket) {
 			writeResponse(tryGetHttpRequest());
 		} catch (IOException e) {
 			log.error(e, e);

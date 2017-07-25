@@ -19,9 +19,11 @@ class FilesOnlyResponder extends SocketProcessor {
 
 	private final EnumSet<HttpMethod> supportMethods = EnumSet.of(GET, HEAD);
 	private File file;
+	private String baseDirectory;
 
-	FilesOnlyResponder(Socket socket) throws IOException {
+	FilesOnlyResponder(Socket socket, String baseDirectory) throws IOException {
 		super(socket);
+		this.baseDirectory = baseDirectory;
 	}
 
 	@Override
@@ -48,13 +50,9 @@ class FilesOnlyResponder extends SocketProcessor {
 		String path = httpRequest.getPath();
 		if (path.isEmpty() || path.endsWith("/"))
 			path += "index.html";
-		file = new File(getParentPath(), path);
+		file = new File(baseDirectory, path);
 		log.debug(file);
 		return file;
-	}
-
-	private String getParentPath() {
-		return new File(FilesOnlyResponder.class.getResource("/web/testPage.html").getFile()).getParent();
 	}
 
 	@Override
