@@ -7,12 +7,17 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
+
+import static server.HttpMethod.GET;
+import static server.HttpMethod.HEAD;
 
 @Log4j2
 class FilesOnlyResponder extends SocketProcessor {
 
+	private final EnumSet<HttpMethod> supportMethods = EnumSet.of(GET, HEAD);
 	private File file;
 
 	FilesOnlyResponder(Socket socket) throws IOException {
@@ -24,7 +29,7 @@ class FilesOnlyResponder extends SocketProcessor {
 		Map<String, String> m = new HashMap<>();
 		m.put("contentType", "text/html");
 		m.put("length", "0");
-		if (httpRequest.getMethod() != HttpMethod.GET && httpRequest.getMethod() != HttpMethod.HEAD) {
+		if (!supportMethods.contains(httpRequest.getMethod())) {
 			m.put("code", "501 Not Implemented");
 			return m;
 		}
@@ -54,7 +59,7 @@ class FilesOnlyResponder extends SocketProcessor {
 
 	@Override
 	void writePage(HttpRequest httpRequest) {
-		if (!file.exists() || httpRequest.getMethod() == HttpMethod.HEAD)
+		if (!file.exists() || HEAD.equals(httpRequest.getMethod()))
 			return;
 		try {
 			ByteBuffer bb = ByteBuffer.allocate(1024);
