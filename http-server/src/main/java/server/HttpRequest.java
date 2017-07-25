@@ -48,6 +48,16 @@ public interface HttpRequest {
 			public String getBody() {
 				return body;
 			}
+
+			@Override
+			public String toString() {
+				return String.join("\n",
+						httpMethod.toString(),
+						path,
+						params.toString(),
+						headers.toString(),
+						body);
+			}
 		};
 	}
 }

@@ -1,6 +1,5 @@
 package server;
 
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
 
@@ -26,16 +25,31 @@ public abstract class SocketProcessor implements Runnable {
 	@Override
 	public void run() {
 		try (Socket clientSocket = socket) {
-			writeResponse(getHttpRequest());
+			writeResponse(tryGetHttpRequest());
 		} catch (IOException e) {
 			log.error(e);
 		}
 	}
 
-	@SneakyThrows
-	private HttpRequest getHttpRequest() {
+	private HttpRequest tryGetHttpRequest() {
+		try {
+			return getHttpRequest();
+		} catch (Exception e) {
+			log.error(e, e);
+			return emptyRequest();
+		}
+	}
+
+	private HttpRequest emptyRequest() {
+		return HttpRequest.from(HttpMethod.UNKNOWN, "/", Collections.emptyMap(), Collections.emptyMap(), "");
+	}
+
+	private HttpRequest getHttpRequest() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
-		String s = br.readLine().trim();
+		String s = br.readLine();
+		if (s == null)
+			return emptyRequest();
+		s = s.trim();
 
 		String[] contentAndTail = s.split("\\s", 2);
 		HttpMethod httpMethod = HttpMethod.valueOf(contentAndTail[0]);
@@ -57,7 +71,9 @@ public abstract class SocketProcessor implements Runnable {
 		while (br.ready() && (s = br.readLine()) != null)
 			body.append(s);
 
-		return HttpRequest.from(httpMethod, path, params, headers, body.toString());
+		HttpRequest request = HttpRequest.from(httpMethod, path, params, headers, body.toString());
+		log.debug(request);
+		return request;
 	}
 
 	private Map<String, String> getParams(String s) {
@@ -73,6 +89,7 @@ public abstract class SocketProcessor implements Runnable {
 		writeHeader(getHeaderProps(httpRequest));
 		writePage(httpRequest);
 		outputStream.flush();
+		log.debug("Обработка завершена");
 	}
 
 	abstract Map<String, String> getHeaderProps(HttpRequest httpRequest);
@@ -81,19 +98,23 @@ public abstract class SocketProcessor implements Runnable {
 		outputStream.write(formatHeader(
 				headerProps.getOrDefault("code", "200 OK"),
 				headerProps.getOrDefault("contentType", "text/html"),
-				headerProps.getOrDefault("length", "1024")).getBytes());
+				headerProps.getOrDefault("length", "1024"),
+				headerProps.getOrDefault("lastModified", "Wed, 21 Oct 2015 07:28:00 GMT")
+		).getBytes());
 	}
 
-	static String formatHeader(String code, String contentType, String length) {
+	static String formatHeader(String code, String contentType, String length, String date) {
 		return String.format(
 				"HTTP/1.1 %s\r\n" +
 						"Server: kors-server\r\n" +
 						"Content-Type: %s\r\n" +
 						"Content-Length: %s\r\n" +
+						"Last-Modified: %s\r\n" +
 						"Connection: close\r\n\r\n",
 				code,
 				contentType,
-				length);
+				length,
+				date);
 	}
 
 	abstract void writePage(HttpRequest httpRequest);

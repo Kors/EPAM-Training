@@ -16,8 +16,8 @@ class HttpServer {
 			log.info(() -> "Server started on port: " + serverSocket.getLocalPort() + "\n");
 			ForkJoinPool pool = ForkJoinPool.commonPool();
 			while (!Thread.currentThread().isInterrupted()) {
-				log.debug("Client connected");
 				pool.execute(new FilesOnlyResponder(serverSocket.accept()));
+				log.debug("Client connected");
 			}
 		} catch (IOException e) {
 			log.error("Start http-server failed", e);

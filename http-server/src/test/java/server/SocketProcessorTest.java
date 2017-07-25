@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -45,16 +46,21 @@ class SocketProcessorTest {
 		SocketProcessor processor = new HelloWorldResponder(mockSocket);
 		processor.run();
 		assertThat(new String(testOutputStream.getBytes()).trim(),
-				Is.is(SocketProcessor.formatHeader("200 OK", "text/html", "73") +
+				Is.is(SocketProcessor.formatHeader("200 OK", "text/html", "73", "Wed, 21 Oct 2015 07:28:00 GMT") +
 						HelloWorldResponder.httpMsg
 				));
 	}
 
 	@Test
 	void fileResponse() throws Exception {
-		FileChannel fc = FileChannel.open(Paths.get(SocketProcessor.class.getResource("/testPage.html").toURI()));
+		Path p = Paths.get(SocketProcessor.class.getResource("/web/testPage.html").toURI());
+		FileChannel fc = FileChannel.open(p);
 		ByteBuffer b = ByteBuffer.allocate(1024);
-		b.put(SocketProcessor.formatHeader("200 OK", "text/html", "187").getBytes());
+		b.put(SocketProcessor.formatHeader("200 OK",
+				"text/html",
+				String.valueOf(p.toFile().length()),
+				"Wed, 21 Oct 2015 07:28:00 GMT")
+				.getBytes());
 		fc.read(b);
 		SocketProcessor processor = new FilesOnlyResponder(mockSocket);
 		processor.run();
