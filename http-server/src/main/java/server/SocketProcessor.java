@@ -12,9 +12,9 @@ import java.util.Map;
 @Log4j2
 public abstract class SocketProcessor implements Runnable {
 
-	private Socket socket;
-	private final InputStream inputStream;
 	final OutputStream outputStream;
+	private final InputStream inputStream;
+	private Socket socket;
 
 	SocketProcessor(Socket socket) throws IOException {
 		this.socket = socket;
@@ -22,12 +22,26 @@ public abstract class SocketProcessor implements Runnable {
 		inputStream = socket.getInputStream();
 	}
 
+	static String formatHeader(String code, String contentType, String length, String date) {
+		return String.format(
+				"HTTP/1.1 %s\r\n" +
+						"Server: kors-server\r\n" +
+						"Content-Type: %s\r\n" +
+						"Content-Length: %s\r\n" +
+						"Last-Modified: %s\r\n" +
+						"Connection: close\r\n\r\n",
+				code,
+				contentType,
+				length,
+				date);
+	}
+
 	@Override
 	public void run() {
 		try (Socket clientSocket = socket) {
 			writeResponse(tryGetHttpRequest());
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e, e);
 		}
 	}
 
@@ -103,19 +117,5 @@ public abstract class SocketProcessor implements Runnable {
 		).getBytes());
 	}
 
-	static String formatHeader(String code, String contentType, String length, String date) {
-		return String.format(
-				"HTTP/1.1 %s\r\n" +
-						"Server: kors-server\r\n" +
-						"Content-Type: %s\r\n" +
-						"Content-Length: %s\r\n" +
-						"Last-Modified: %s\r\n" +
-						"Connection: close\r\n\r\n",
-				code,
-				contentType,
-				length,
-				date);
-	}
-
-	abstract void writePage(HttpRequest httpRequest);
+	abstract void writePage(HttpRequest httpRequest) throws IOException;
 }

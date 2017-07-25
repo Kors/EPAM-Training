@@ -1,7 +1,5 @@
 package server;
 
-import lombok.SneakyThrows;
-
 import java.io.IOException;
 import java.net.Socket;
 import java.util.HashMap;
@@ -24,9 +22,8 @@ class HelloWorldResponder extends SocketProcessor {
 		return m;
 	}
 
-	@SneakyThrows
 	@Override
-	void writePage(HttpRequest httpRequest) {
+	void writePage(HttpRequest httpRequest) throws IOException {
 		outputStream.write(httpMsg.getBytes());
 	}
 }
