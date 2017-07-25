@@ -32,7 +32,10 @@ class FilesOnlyResponder extends SocketProcessor {
 		}
 		if (httpRequest.getMethod() == HttpMethod.HEAD)
 			writeBody = false;
-		f = new File(new File(FilesOnlyResponder.class.getResource("/testPage.html").getFile()).getParent(), httpRequest.getPath());
+		String file = httpRequest.getPath();
+		if (file.isEmpty() || file.endsWith("/"))
+			file += "index.html";
+		f = new File(new File(FilesOnlyResponder.class.getResource("/web/testPage.html").getFile()).getParent(), file);
 		if (f.exists()) {
 			m.put("code", "200 OK");
 			m.put("length", String.valueOf(f.length()));
@@ -47,6 +50,7 @@ class FilesOnlyResponder extends SocketProcessor {
 	void writePage(HttpRequest httpRequest) {
 		if (!writeBody)
 			return;
+		log.debug(f);
 		try {
 			ByteBuffer bb = ByteBuffer.allocate(1024);
 			FileChannel fc = FileChannel.open(f.toPath());
@@ -55,7 +59,7 @@ class FilesOnlyResponder extends SocketProcessor {
 				bb.clear();
 			}
 		} catch (IOException e) {
-			log.error(e);
+			log.error(e, e);
 		}
 	}
 }
