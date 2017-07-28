@@ -3,6 +3,7 @@ package server;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.hamcrest.core.AnyOf;
+import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.StringStartsWith;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,8 +12,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.io.*;
 import java.net.Socket;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Log4j2
 class HttpServerTest {
@@ -105,7 +109,7 @@ class HttpServerTest {
 		clientSocket.close();
 	}
 
-	@DisplayName("Get right response")
+	@DisplayName("Get positive response")
 	@ParameterizedTest
 	@MethodSource(names = "getOkRequests")
 	void okResponseTest(String request) throws IOException {
@@ -114,20 +118,29 @@ class HttpServerTest {
 		assertThat(getResponse(), StringStartsWith.startsWith("HTTP/1.1 200 OK"));
 	}
 
-	@DisplayName("Get failed response")
+	@DisplayName("Get negative response")
 	@ParameterizedTest
 	@MethodSource(names = "getErrRequests")
 	void errResponseTest(String request) throws IOException {
 		clientWriter.write(request);
 		clientWriter.flush();
-		assertThat(getResponse(), AnyOf.anyOf(StringStartsWith.startsWith("HTTP/1.1 404 Not Found"),
+
+		String response = getResponse();
+		assertThat(response, AnyOf.anyOf(StringStartsWith.startsWith("HTTP/1.1 404 Not Found"),
 				StringStartsWith.startsWith("HTTP/1.1 501 Not Implemented")));
+		assertThat("Negative response body is not empty", getBody(response), IsEqual.equalTo(""));
+	}
+
+	private String getBody(String response) {
+		Matcher m = Pattern.compile(".*\\n\\s*\\n((.*\\n)*.*)").matcher(response);
+		assertTrue(m.find(), "No body found! (No separator after head of response!)");
+		return m.group(1);
 	}
 
 	private String getResponse() throws IOException {
 		StringBuilder response = new StringBuilder();
 		for (String line; (line = clientReader.readLine()) != null; ) {
-			response.append(line);
+			response.append(line).append("\n");
 			log.debug(line);
 		}
 		return response.toString();
