@@ -5,6 +5,8 @@ import java.util.HashSet;
 @SuppressWarnings("unused")
 class ContentTypeParser {
 
+	private static final String DEFAULT_MIME_TYPE = "application/octet-stream";
+
 	private static HashSet<Class> enumSet = new HashSet<>();
 
 	static {
@@ -15,15 +17,15 @@ class ContentTypeParser {
 		enumSet.add(VideoTypes.class);
 	}
 
-	static String getFileType(String name) {
-		String extension = name.contains(".") ? name.substring(name.lastIndexOf(".") + 1) : "";
+	static String getMimeType(String fileName) {
+		String extension = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : "";
 		if (extension.length() == 0)
-			return "text/html";
+			return DEFAULT_MIME_TYPE;
 		Enum element;
 		for (Class c : enumSet)
 			if ((element = valueOf(c, extension)) != null)
 				return element.toString();
-		return "text/html";
+		return DEFAULT_MIME_TYPE;
 	}
 
 	private static <T extends Enum<T>> T valueOf(Class<T> tClass, String elementName) {
@@ -70,11 +72,20 @@ class ContentTypeParser {
 	}
 
 	enum TextTypes {
-		css, csv, html;
+		css, csv, html, txt("plain");
+
+		private String name;
+
+		TextTypes() {
+		}
+
+		TextTypes(String name) {
+			this.name = name;
+		}
 
 		@Override
 		public String toString() {
-			return "text/" + name();
+			return "text/" + (name == null ? name() : name);
 		}
 	}
 

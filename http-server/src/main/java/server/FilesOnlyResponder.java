@@ -11,7 +11,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import static server.ContentTypeParser.getFileType;
+import static server.ContentTypeParser.getMimeType;
 import static server.HttpMethod.GET;
 import static server.HttpMethod.HEAD;
 
@@ -39,7 +39,7 @@ class FilesOnlyResponder extends SocketProcessor {
 		if (getFile(httpRequest).exists()) {
 			m.put("code", "200 OK");
 			m.put("length", String.valueOf(file.length()));
-			m.put("contentType", getFileType(file.getName()));
+			m.put("contentType", getMimeType(file.getName()));
 		} else {
 			m.put("code", "404 Not Found");
 		}
