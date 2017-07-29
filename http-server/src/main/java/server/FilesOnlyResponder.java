@@ -59,7 +59,7 @@ class FilesOnlyResponder extends SocketProcessor {
 
 	@Override
 	void writePage(HttpRequest httpRequest) {
-		if (!getFile(httpRequest).exists() || HEAD.equals(httpRequest.getMethod()))
+		if (!GET.equals(httpRequest.getMethod()) || !getFile(httpRequest).exists())
 			return;
 		try {
 			ByteBuffer bb = ByteBuffer.allocate(1024);
