@@ -6,7 +6,7 @@ class ContentTypeParser {
 	private static final String DEFAULT_MIME_TYPE = "application/octet-stream";
 
 	static String getMimeType(String fileName) {
-		String extension = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1) : "";
+		String extension = fileName.contains(".") ? fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase() : "";
 		if (extension.length() == 0)
 			return DEFAULT_MIME_TYPE;
 		try {
