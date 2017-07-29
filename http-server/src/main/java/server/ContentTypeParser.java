@@ -34,7 +34,7 @@ class ContentTypeParser {
 	}
 
 	enum ImageTypes {
-		jpg("jpeg"), jpeg, png, tiff, webp;
+		jpg("jpeg"), jpeg, png, tiff, webp, ico("x-icon");
 
 		private String name;
 
