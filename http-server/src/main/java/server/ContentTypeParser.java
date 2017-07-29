@@ -1,6 +1,5 @@
 package server;
 
-@SuppressWarnings("unused")
 class ContentTypeParser {
 
 	private static final String DEFAULT_MIME_TYPE = "application/octet-stream";
@@ -16,6 +15,7 @@ class ContentTypeParser {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	enum MimeTypes {
 		jpg("image/jpeg"),
 		jpeg("image/jpeg"),
