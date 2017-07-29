@@ -1,6 +1,5 @@
 package server;
 
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.hamcrest.core.AnyOf;
 import org.hamcrest.core.IsEqual;
@@ -21,13 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Log4j2
 class HttpServerTest {
 
-	private static Thread serverThread;
-	private Socket clientSocket;
-
-	private BufferedWriter clientWriter;
-	private BufferedReader clientReader;
-
-	private static int PORT;
+	private final static Properties props = new Properties();
 	private static final String[] OK_REQUESTS = {
 			"GET / HTTP/1.1\n" +
 					"Host: localhost:8090\n" +
@@ -77,24 +70,33 @@ class HttpServerTest {
 					"Accept-Language: ru-RU,ru;q=0.8,en-US;q=0.6,en;q=0.4\n\n" +
 					"Some data to Post\n"
 	};
+	private static Thread serverThread;
+	private static int PORT;
+	private Socket clientSocket;
+	private BufferedWriter clientWriter;
+	private BufferedReader clientReader;
 
 	@BeforeAll
-	static void setUp() {
+	static void setUp() throws IOException {
 		serverThread = new Thread(HttpServer::main, "httpServer");
 		serverThread.start();
-		PORT = getPort();
-	}
-
-	@SneakyThrows
-	private static int getPort() {
-		Properties props = new Properties();
 		props.load(HttpServer.class.getResourceAsStream("/http-server.properties"));
-		return Integer.parseInt(props.getProperty("port", "8080"));
+		PORT = Integer.parseInt(props.getProperty("port", "8080"));
 	}
 
 	@AfterAll
 	static void tearDown() {
 		serverThread.interrupt();
+	}
+
+	@SuppressWarnings("unused")
+	private static String[] getOkRequests() {
+		return OK_REQUESTS;
+	}
+
+	@SuppressWarnings("unused")
+	private static String[] getErrRequests() {
+		return ERR_REQUESTS;
 	}
 
 	@BeforeEach
@@ -144,16 +146,6 @@ class HttpServerTest {
 			log.debug(line);
 		}
 		return response.toString();
-	}
-
-	@SuppressWarnings("unused")
-	private static String[] getOkRequests() {
-		return OK_REQUESTS;
-	}
-
-	@SuppressWarnings("unused")
-	private static String[] getErrRequests() {
-		return ERR_REQUESTS;
 	}
 
 }
