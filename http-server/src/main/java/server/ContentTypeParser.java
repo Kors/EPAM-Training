@@ -16,13 +16,6 @@ class ContentTypeParser {
 		}
 	}
 
-	private static <T extends Enum<T>> T valueOf(Class<T> tClass, String elementName) {
-		for (T element : tClass.getEnumConstants())
-			if (element.name().equals(elementName))
-				return element;
-		return null;
-	}
-
 	enum MimeTypes {
 		jpg("image/jpeg"),
 		jpeg("image/jpeg"),
