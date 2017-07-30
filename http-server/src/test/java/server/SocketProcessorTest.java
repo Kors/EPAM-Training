@@ -85,4 +85,16 @@ class SocketProcessorTest {
 				IsEqual.equalTo(new String(b.array()).trim()));
 	}
 
+	@DisplayName("Bad request format")
+	@Test
+	void unknownRequestFileResponse() throws Exception {
+		testInputStream.setBuf("!&$.@?&/1.1_some bad request".getBytes());
+		ByteBuffer b = ByteBuffer.allocate(1024);
+		b.put(SocketProcessor.formatHeader("501 Not Implemented", "text/html",
+				"0", "Wed, 21 Oct 2015 07:28:00 GMT").getBytes());
+		new FilesOnlyResponder(mockSocket, props.getProperty("web.directory")).run();
+		assertThat(new String(testOutputStream.getBytes()).trim(),
+				IsEqual.equalTo(new String(b.array()).trim()));
+	}
+
 }
