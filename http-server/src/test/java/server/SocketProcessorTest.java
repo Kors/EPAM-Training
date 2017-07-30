@@ -70,13 +70,13 @@ class SocketProcessorTest {
 	@CsvSource({"/testPage.html, text/html", "/imgs/simpleImg.jpg, image/jpeg", "/favicon.ico, image/x-icon"})
 	void fileResponse(String file, String mimeType) throws Exception {
 		testInputStream.setBuf(String.format(REQUEST, file).getBytes());
-		Path p = Paths.get(SocketProcessor.class.getResource("/web" + file).toURI());
+		Path p = Paths.get(props.getProperty("web.directory") + file);
 		FileChannel fc = FileChannel.open(p);
 		ByteBuffer b = ByteBuffer.allocate(1024 * 10);
 		b.put(SocketProcessor.formatHeader("200 OK",
 				mimeType,
 				String.valueOf(p.toFile().length()),
-				"Wed, 21 Oct 2015 07:28:00 GMT")
+				FilesOnlyResponder.getLastModifiedTime(p.toFile()))
 				.getBytes());
 		fc.read(b);
 		SocketProcessor processor = new FilesOnlyResponder(mockSocket, props.getProperty("web.directory"));

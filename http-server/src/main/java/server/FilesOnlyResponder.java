@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +31,12 @@ class FilesOnlyResponder extends SocketProcessor {
 		this.baseDirectory = baseDirectory;
 	}
 
+	static String getLastModifiedTime(File file) {
+		Instant instant = Instant.ofEpochMilli(file.lastModified());
+		ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+		return DateTimeFormatter.RFC_1123_DATE_TIME.format(zdt);
+	}
+
 	@Override
 	Map<String, String> getHeaderProps(HttpRequest httpRequest) {
 		Map<String, String> m = new HashMap<>();
@@ -40,6 +50,7 @@ class FilesOnlyResponder extends SocketProcessor {
 			m.put("code", "200 OK");
 			m.put("length", String.valueOf(file.length()));
 			m.put("contentType", getMimeType(file.getName()));
+			m.put("lastModified", getLastModifiedTime(file));
 		} else {
 			m.put("code", "404 Not Found");
 		}
