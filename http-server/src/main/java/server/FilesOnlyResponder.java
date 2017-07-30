@@ -31,12 +31,6 @@ class FilesOnlyResponder extends SocketProcessor {
 		this.baseDirectory = baseDirectory;
 	}
 
-	static String getLastModifiedTime(File file) {
-		Instant instant = Instant.ofEpochMilli(file.lastModified());
-		ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
-		return DateTimeFormatter.RFC_1123_DATE_TIME.format(zdt);
-	}
-
 	@Override
 	Map<String, String> getHeaderProps(HttpRequest httpRequest) {
 		Map<String, String> m = new HashMap<>();
@@ -66,6 +60,12 @@ class FilesOnlyResponder extends SocketProcessor {
 		file = new File(baseDirectory, path);
 		log.debug(file);
 		return file;
+	}
+
+	static String getLastModifiedTime(File file) {
+		Instant instant = Instant.ofEpochMilli(file.lastModified());
+		ZonedDateTime zdt = ZonedDateTime.ofInstant(instant, ZoneId.systemDefault());
+		return DateTimeFormatter.RFC_1123_DATE_TIME.format(zdt);
 	}
 
 	@Override
