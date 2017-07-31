@@ -16,7 +16,7 @@ class HttpServer {
 	public static void main(String... args) {
 		loadProps();
 		try (ServerSocket serverSocket = new ServerSocket(getPort())) {
-			log.info(() -> "Server started on port: " + serverSocket.getLocalPort() + "\n");
+			log.info(() -> "Server started, please visit: http://localhost:" + serverSocket.getLocalPort() + "\n");
 			ForkJoinPool pool = ForkJoinPool.commonPool();
 			while (!Thread.currentThread().isInterrupted()) {
 				pool.execute(getExecutor(serverSocket.accept()));

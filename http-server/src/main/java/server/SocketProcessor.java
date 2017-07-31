@@ -24,12 +24,12 @@ public abstract class SocketProcessor implements Runnable {
 
 	static String formatHeader(String code, String contentType, String length, String date) {
 		return String.format(
-				"HTTP/1.1 %s\r\n" +
-						"Server: kors-server\r\n" +
-						"Content-Type: %s\r\n" +
-						"Content-Length: %s\r\n" +
-						"Last-Modified: %s\r\n" +
-						"Connection: close\r\n\r\n",
+				"HTTP/1.1 %s%n" +
+						"Server: kors-server%n" +
+						"Content-Type: %s%n" +
+						"Content-Length: %s%n" +
+						"Last-Modified: %s%n" +
+						"Connection: close%n%n",
 				code,
 				contentType,
 				length,
