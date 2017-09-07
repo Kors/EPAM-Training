@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveAction;
+
+import static server.HttpServer.LogAction.getLogAction;
 
 @Log4j2
 class HttpServer {
@@ -19,7 +22,7 @@ class HttpServer {
 			log.info(() -> "Server started, please visit: http://localhost:" + serverSocket.getLocalPort() + "\n");
 			ForkJoinPool pool = ForkJoinPool.commonPool();
 			while (!Thread.currentThread().isInterrupted()) {
-				pool.execute(getExecutor(serverSocket.accept()));
+				pool.execute(getTask(serverSocket.accept()));
 				log.debug("Client connected");
 			}
 		} catch (IOException e) {
@@ -39,13 +42,31 @@ class HttpServer {
 		return Integer.parseInt(props.getProperty("port", "8080"));
 	}
 
-	private static Runnable getExecutor(Socket socket) {
+	private static RecursiveAction getTask(Socket socket) {
 		try {
 			return new FilesOnlyResponder(socket,
 					props.getProperty("web.directory"));
 		} catch (IOException e) {
 			log.error("Executor can't be created", e);
-			return () -> log.debug("empty executor");
+			return getLogAction("empty executor");
+		}
+	}
+
+	static class LogAction extends RecursiveAction {
+
+		private String msg;
+
+		private LogAction(String msg) {
+			this.msg = msg;
+		}
+
+		@Override
+		protected void compute() {
+			log.debug(msg);
+		}
+
+		static LogAction getLogAction(String msg) {
+			return new LogAction(msg);
 		}
 	}
 }

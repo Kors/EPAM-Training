@@ -58,7 +58,7 @@ class SocketProcessorTest {
 	void simpleResponse() throws Exception {
 		testInputStream.setBuf(String.format(REQUEST, "/testPage.html").getBytes());
 		SocketProcessor processor = new HelloWorldResponder(mockSocket);
-		processor.run();
+		processor.compute();
 		assertThat(new String(testOutputStream.getBytes()).trim(),
 				Is.is(SocketProcessor.formatHeader("200 OK", "text/html", "73", "Wed, 21 Oct 2015 07:28:00 GMT") +
 						HelloWorldResponder.httpMsg
@@ -80,7 +80,7 @@ class SocketProcessorTest {
 				.getBytes());
 		fc.read(b);
 		SocketProcessor processor = new FilesOnlyResponder(mockSocket, props.getProperty("web.directory"));
-		processor.run();
+		processor.compute();
 		assertThat(new String(testOutputStream.getBytes()).trim(),
 				IsEqual.equalTo(new String(b.array()).trim()));
 	}
@@ -92,7 +92,7 @@ class SocketProcessorTest {
 		ByteBuffer b = ByteBuffer.allocate(1024);
 		b.put(SocketProcessor.formatHeader("501 Not Implemented", "text/html",
 				"0", "Wed, 21 Oct 2015 07:28:00 GMT").getBytes());
-		new FilesOnlyResponder(mockSocket, props.getProperty("web.directory")).run();
+		new FilesOnlyResponder(mockSocket, props.getProperty("web.directory")).compute();
 		assertThat(new String(testOutputStream.getBytes()).trim(),
 				IsEqual.equalTo(new String(b.array()).trim()));
 	}

@@ -8,9 +8,10 @@ import java.net.Socket;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.RecursiveAction;
 
 @Log4j2
-public abstract class SocketProcessor implements Runnable {
+public abstract class SocketProcessor extends RecursiveAction {
 
 	final OutputStream outputStream;
 	private final InputStream inputStream;
@@ -37,7 +38,7 @@ public abstract class SocketProcessor implements Runnable {
 	}
 
 	@Override
-	public void run() {
+	public void compute() {
 		try (@SuppressWarnings("unused") Socket clientSocket = socket) {
 			writeResponse(tryGetHttpRequest());
 		} catch (IOException e) {
@@ -103,7 +104,7 @@ public abstract class SocketProcessor implements Runnable {
 		writeHeader(getHeaderProps(httpRequest));
 		writePage(httpRequest);
 		outputStream.flush();
-		log.debug("Обработка завершена");
+		log.debug("пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
 	}
 
 	abstract Map<String, String> getHeaderProps(HttpRequest httpRequest);
